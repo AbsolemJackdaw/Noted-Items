@@ -4,10 +4,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class StackUtils {
 
-	public static String ID = "notedItem";
+	public static String ID  = "notedItemName";
 	public static String AMT = "notedAmount";
 	public static String DMG = "notedDamage";
-	public static String ITM = "notedItem";
+	public static String ITM = "notedItemID";
 
 	public StackUtils(){
 	}

@@ -2,6 +2,8 @@ package net.subaraki.note;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -36,20 +38,26 @@ public class ItemNote extends Item {
 	}
 
 	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player,
+	public boolean onItemUse(ItemStack stack, EntityPlayer player,
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ) {
 
 		if(world.getBlock(x, y, z).equals(Blocks.anvil)){
+
 			if(stack.hasTagCompound()){
-				ItemStack st = new ItemStack(Item.getItemById(stack.getTagCompound().getByte(StackUtils.ITM)));
+				Item item = Item.getItemById(stack.getTagCompound().getShort(StackUtils.ITM));
+				Block block = Block.getBlockById(stack.getTagCompound().getShort(StackUtils.ITM));
+				
+				ItemStack st = new ItemStack(item);
 				st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT);
 				st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
+				EntityItem ei = new EntityItem(world, x, y, z, st);
+				if(!world.isRemote)
+					world.spawnEntityInWorld(ei);
 			}
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 }
