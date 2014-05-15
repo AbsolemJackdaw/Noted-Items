@@ -23,7 +23,7 @@ public class ItemNote extends Item {
 	//item stored
 	//number of items
 	public ItemNote() {
-		maxStackSize = 1;
+		maxStackSize = 6;
 	}
 
 	@Override
