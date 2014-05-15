@@ -21,7 +21,7 @@ public class PowerMaskItems {
 	}
 
 	private void initItems() {
-		sandWraitMask = (ItemWraithMask) new ItemWraithMask(wraithMask, 0, 0, "powermasks:armor/wraithMask").setUnlocalizedName("wraithMask");
+		sandWraitMask = (ItemWraithMask) new ItemWraithMask(wraithMask, 0, 0, "powermasks:armor/wraithMask.png").setUnlocalizedName("wraithMask");
 	}
 
 }
