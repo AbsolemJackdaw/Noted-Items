@@ -51,6 +51,7 @@ public class PowerMaskEvents {
 				GL11.glPushMatrix();
 				ClientProxy.wraithModel.renderModel(0.0625f);
 				GL11.glPopMatrix();
+				evt.result = 0;
 			}
 		}
 	}
