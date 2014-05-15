@@ -14,15 +14,16 @@ public class ItemNote extends Item {
 	//number of items
 	public ItemNote() {
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		
-		par3List.add("Hi");
+
+		if(par1ItemStack.hasTagCompound())
+			par3List.add("Note worth : " + par1ItemStack.stackTagCompound.getInteger(""));
 	}
-	
+
 
 }
