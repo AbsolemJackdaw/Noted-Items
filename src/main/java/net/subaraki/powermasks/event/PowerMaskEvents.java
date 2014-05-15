@@ -64,20 +64,14 @@ public class PowerMaskEvents {
 		}
 
 		if(hasStoneMask(evt.entityPlayer)){
-			evt.entityPlayer.width = 0.4f;
-			evt.entityPlayer.height = 0.4f;
-//			evt.entityPlayer.ySize = 0.2f;
-			evt.entityPlayer.yOffset = 0.2f;
-			evt.entityPlayer.eyeHeight = 0.2f;
-			evt.entityPlayer.stepHeight = 0.5f;
 
 			if(evt.slot == 3){
 				
 				syncBipedModels(ClientProxy.stoneModel, evt.renderer.modelBipedMain);
 				Minecraft.getMinecraft().renderEngine.bindTexture(((ItemPowerMask)evt.stack.getItem()).getSkin());
 				GL11.glPushMatrix();
-				GL11.glScalef(0.3f, 0.3f, 0.3f);
-				GL11.glTranslatef(0, 3.5f, 0);
+//				GL11.glScalef(0.3f, 0.3f, 0.3f);
+//				GL11.glTranslatef(0, 3.5f, 0);
 				ClientProxy.stoneModel.renderModel(0.0625f, tick);
 				GL11.glPopMatrix();
 				evt.result = 0;
@@ -89,13 +83,8 @@ public class PowerMaskEvents {
 	@SubscribeEvent
 	public void onLivingUpdateEvent(LivingUpdateEvent evt){
 
-//		if(evt.entityLiving instanceof EntityPlayer){
-//			if(hasMask((EntityPlayer) evt.entityLiving)){
-//				evt.entityLiving.setInvisible(true);
-//			}else{
-//				evt.entityLiving.setInvisible(false);
-//			}
-//		}
+		if(evt.entityLiving instanceof EntityPlayer){
+		}
 	}
 
 	@SubscribeEvent
