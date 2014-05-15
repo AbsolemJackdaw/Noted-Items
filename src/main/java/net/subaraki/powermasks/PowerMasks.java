@@ -12,6 +12,7 @@ public class PowerMasks {
 	@EventHandler
 	public void init(FMLInitializationEvent evt){
 		
+		new net.subaraki.powermasks.event.EventHandler();
 	}
 	
 	@EventHandler
