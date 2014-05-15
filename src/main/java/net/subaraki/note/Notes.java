@@ -1,7 +1,9 @@
 package net.subaraki.note;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -18,6 +20,10 @@ public class Notes {
 
 		note = new ItemNote().setUnlocalizedName("notedItem").setTextureName("map_empty").setCreativeTab(CreativeTabs.tabAllSearch);
 		GameRegistry.registerItem(note, "notedItem");
+		
+		GameRegistry.addRecipe(new ItemStack(note), new Object[]{
+			"xxx","xpx","xxx", 'x', Items.paper, 'p' , Items.feather
+		});
 	}
 	
 	@EventHandler
