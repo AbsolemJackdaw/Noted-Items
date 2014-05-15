@@ -30,10 +30,11 @@ public class PowerMaskEvents {
 
 	}
 
+	float tick;
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderplayer(RenderPlayerEvent.SetArmorModel evt){
-
+		tick+= 0.1f;
 		if(evt.entityLiving instanceof EntityPlayer){
 			if(hasWraithMask((EntityPlayer) evt.entityLiving)){
 				evt.entityLiving.setInvisible(true);
@@ -49,7 +50,7 @@ public class PowerMaskEvents {
 				Minecraft.getMinecraft().renderEngine.bindTexture(((ItemPowerMask)evt.stack.getItem()).getSkin());
 
 				GL11.glPushMatrix();
-				ClientProxy.wraithModel.renderModel(0.0625f);
+				ClientProxy.wraithModel.renderModel(0.0625f, tick);
 				GL11.glPopMatrix();
 				evt.result = 0;
 			}
@@ -88,7 +89,6 @@ public class PowerMaskEvents {
 		return false;
 	}
 	
-	
 	private void syncBipedModels(ModelBiped model1, ModelBiped model2){
 		model1.bipedHead.rotateAngleX = model2.bipedHead.rotateAngleX;
 		model1.bipedHead.rotateAngleY = model2.bipedHead.rotateAngleY;
@@ -118,5 +118,8 @@ public class PowerMaskEvents {
 		model1.bipedBody.rotateAngleY = model2.bipedBody.rotateAngleY;
 		model1.bipedBody.rotateAngleZ = model2.bipedBody.rotateAngleZ;
 		
+		model1.bipedLeftLeg.setRotationPoint(model2.bipedLeftLeg.rotationPointX, model2.bipedLeftLeg.rotationPointY, model2.bipedLeftLeg.rotationPointZ);
+		model1.bipedRightLeg.setRotationPoint(model2.bipedRightLeg.rotationPointX, model2.bipedRightLeg.rotationPointY, model2.bipedRightLeg.rotationPointZ);
+
 	}
 }

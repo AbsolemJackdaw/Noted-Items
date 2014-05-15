@@ -8,7 +8,7 @@ public class ModelSimpleBiped extends ModelBiped{
 	}
 
 
-	public void renderModel(float f5){
+	public void renderModel(float f5, float f){
 		bipedBody.render(f5);
 		bipedHeadwear.render(f5);
 		bipedHead.render(f5);
