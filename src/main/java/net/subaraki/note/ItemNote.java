@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -33,7 +34,7 @@ public class ItemNote extends Item {
 		if(par1ItemStack.hasTagCompound())
 			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
 
-		return s.length() > 0 ? "Noted " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
+		return s.length() > 0 ? I18n.format("noted.item") + " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
 	}
 
 	@Override
@@ -46,7 +47,6 @@ public class ItemNote extends Item {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
 		blockicon = par1IconRegister.registerIcon("notedItems:block");
-	
 	}
 	
 	@Override
@@ -70,7 +70,7 @@ public class ItemNote extends Item {
 			else
 				icon = itemIcon;
 		}else{
-			icon = Blocks.bedrock.getBlockTextureFromSide(0);
+			icon = blockicon;
 		}
 
 		return pass == 0 ? super.getIcon(stack, 0) : icon;
@@ -116,5 +116,4 @@ public class ItemNote extends Item {
 		}
 		return false;
 	}
-
 }
