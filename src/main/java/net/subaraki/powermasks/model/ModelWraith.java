@@ -46,6 +46,7 @@ public class ModelWraith extends ModelSimpleBiped {
 			clothPieceHead2[0].setRotationPoint(-3.7f, -8f, 1);
 		}
 		
+		
 		float var4 = 0.5F * 0.75F;
 		float var6 = f * 0.6662F + this.progress * 0.6662f;
 
