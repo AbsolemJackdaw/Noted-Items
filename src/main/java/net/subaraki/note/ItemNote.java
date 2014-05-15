@@ -64,9 +64,9 @@ public class ItemNote extends Item {
 			if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
 				if( i != null){
 					if(i.getIcon(stack, 0) != null)
-						icon = i.getIcon(stack, 0);
+						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), 0);
 					else if( i.getIcon(stack, 1) != null)
-						icon = i.getIcon(stack, 1);
+						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), 1);
 				}else
 					icon = super.getIcon(stack, 0);
 			}else{
@@ -110,7 +110,7 @@ public class ItemNote extends Item {
 				st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT);
 				st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
 				EntityItem ei = new EntityItem(world, x, y, z, st);
-				
+
 				if(!world.isRemote)
 					world.spawnEntityInWorld(ei);
 
