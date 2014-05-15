@@ -22,7 +22,7 @@ public class ItemNote extends Item {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 
 		if(par1ItemStack.hasTagCompound())
-			par3List.add("Note worth : " + par1ItemStack.stackTagCompound.getInteger(""));
+			par3List.add("Note worth : " + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT));
 	}
 
 
