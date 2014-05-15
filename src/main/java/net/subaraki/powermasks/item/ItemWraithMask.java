@@ -3,6 +3,7 @@ package net.subaraki.powermasks.item;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -24,5 +25,12 @@ public class ItemWraithMask extends ItemPowerMask {
 
 		itemIcon = par1IconRegister.registerIcon("powermasks:wraithMask");
 	
+	}
+	
+	private static final ResourceLocation skin = new ResourceLocation("powermasks","skins/wraith.png");
+	
+	@Override
+	public ResourceLocation getSkin() {
+		return skin;
 	}
 }
