@@ -23,15 +23,22 @@ public class AnvilEvent {
 				if(evt.left.hasTagCompound() && !evt.left.stackTagCompound.getString(StackUtils.ID).equals(evt.right.getDisplayName()))
 					return;
 
+				//if(evt.left.hasTagCompound() && evt.left.stackTagCompound.getInteger(StackUtils.DMG) != evt.right.getItemDamage())
+				//return;
+				
+				if(!evt.right.isStackable())
+					return;
+
 				evt.cost = 2;
 
 				int size = 0;
 				if(evt.left.hasTagCompound())
 					size = evt.left.getTagCompound().getInteger(StackUtils.AMT);
 
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setInteger(StackUtils.AMT, evt.right.stackSize + size);
-				tag.setString(StackUtils.ID, evt.right.getDisplayName());
+				NBTTagCompound tag = new StackUtils().createNotedNbt(
+						evt.right.stackSize + size, 
+						evt.right.getDisplayName(), 
+						evt.right.getItemDamage());
 
 				ItemStack noted = new ItemStack(Notes.note, 1,0);
 				noted.stackTagCompound = tag;
