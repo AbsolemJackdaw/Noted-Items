@@ -4,10 +4,10 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -17,6 +17,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemNote extends Item {
 
+	IIcon blockicon;
+	
 	//item stored
 	//number of items
 	public ItemNote() {
@@ -41,6 +43,13 @@ public class ItemNote extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IIconRegister par1IconRegister) {
+		blockicon = par1IconRegister.registerIcon("notedItems:block");
+	
+	}
+	
+	@Override
 	public IIcon getIcon(ItemStack stack, int pass) {
 
 		Item i = null;
@@ -61,7 +70,7 @@ public class ItemNote extends Item {
 			else
 				icon = itemIcon;
 		}else{
-			icon = b.getBlockTextureFromSide(0);
+			icon = Blocks.bedrock.getBlockTextureFromSide(0);
 		}
 
 		return pass == 0 ? super.getIcon(stack, 0) : icon;
