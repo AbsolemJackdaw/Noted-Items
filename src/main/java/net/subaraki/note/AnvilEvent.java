@@ -23,10 +23,7 @@ public class AnvilEvent {
 				if(evt.left.hasTagCompound() && !evt.left.stackTagCompound.getString(StackUtils.ID).equals(evt.right.getDisplayName()))
 					return;
 
-				//if(evt.left.hasTagCompound() && evt.left.stackTagCompound.getInteger(StackUtils.DMG) != evt.right.getItemDamage())
-				//return;
-				
-				if(!evt.right.isStackable())
+				if(evt.left.hasTagCompound() && evt.left.stackTagCompound.getInteger(StackUtils.DMG) != evt.right.getItemDamage())
 					return;
 
 				evt.cost = 2;

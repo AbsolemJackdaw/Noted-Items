@@ -23,7 +23,13 @@ public class ItemNote extends Item {
 
 		if(par1ItemStack.hasTagCompound())
 			par3List.add("Note worth : " + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT) +" "+
-		par1ItemStack.stackTagCompound.getString(StackUtils.ID));
+					par1ItemStack.stackTagCompound.getString(StackUtils.ID));
+
+		if(par1ItemStack.hasTagCompound())
+			par3List.add("Item Damaged ? " + 
+					(par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG) > 0 ? "Yes," + " " +
+							par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG)	
+							: "No"));
 	}
 
 

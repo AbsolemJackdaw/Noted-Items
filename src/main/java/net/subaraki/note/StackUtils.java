@@ -16,9 +16,9 @@ public class StackUtils {
 		
 		tag.setInteger(AMT, amt);
 		tag.setString(ID, name);
-		//tag.setInteger(DMG, damage);
+		tag.setInteger(DMG, damage);
 		
-		return null;
+		return tag;
 	}
 	
 
