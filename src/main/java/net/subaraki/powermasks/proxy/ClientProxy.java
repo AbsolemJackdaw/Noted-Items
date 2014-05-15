@@ -6,10 +6,11 @@ import net.subaraki.powermasks.model.ModelWraith;
 
 public class ClientProxy extends ServerProxy {
 
-	
-	
+
+
 	public static final ModelWraith wraithModel = new ModelWraith();
-	
+	public static ModelSimpleBiped stoneModel = new ModelSimpleBiped();
+
 	public ClientProxy() {
 	}
 

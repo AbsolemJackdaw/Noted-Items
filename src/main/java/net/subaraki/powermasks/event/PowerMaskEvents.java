@@ -2,7 +2,7 @@ package net.subaraki.powermasks.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.subaraki.powermasks.item.ItemPowerMask;
+import net.subaraki.powermasks.item.ItemStoneMask;
 import net.subaraki.powermasks.item.ItemWraithMask;
 import net.subaraki.powermasks.proxy.ClientProxy;
 
@@ -28,7 +29,12 @@ public class PowerMaskEvents {
 
 	@SubscribeEvent
 	public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event){
-
+		if(event.target instanceof EntityPlayer){
+			if(hasStoneMask(((EntityPlayer)event.target))){
+				if(event.entityLiving instanceof EntityLiving)
+					((EntityLiving)event.entityLiving).setAttackTarget(null);
+			}
+		}
 	}
 
 	float tick;
@@ -36,13 +42,13 @@ public class PowerMaskEvents {
 	@SideOnly(Side.CLIENT)
 	public void renderplayer(RenderPlayerEvent.SetArmorModel evt){
 		tick+= 0.1f;
-		if(evt.entityLiving instanceof EntityPlayer){
-			if(hasWraithMask((EntityPlayer) evt.entityLiving)){
-				evt.entityLiving.setInvisible(true);
-			}else{
-				evt.entityLiving.setInvisible(false);
-			}
-		}
+//		if(evt.entityLiving instanceof EntityPlayer){
+//			if(hasMask((EntityPlayer) evt.entityLiving)){
+//				evt.entityLiving.setInvisible(true);
+//			}else{
+//				evt.entityLiving.setInvisible(false);
+//			}
+//		}
 
 		if(hasWraithMask(evt.entityPlayer)){
 			if(evt.slot == 3){
@@ -56,25 +62,50 @@ public class PowerMaskEvents {
 				evt.result = 0;
 			}
 		}
+
+		if(hasStoneMask(evt.entityPlayer)){
+			evt.entityPlayer.width = 0.4f;
+			evt.entityPlayer.height = 0.4f;
+//			evt.entityPlayer.ySize = 0.2f;
+			evt.entityPlayer.yOffset = 0.2f;
+			evt.entityPlayer.eyeHeight = 0.2f;
+			evt.entityPlayer.stepHeight = 0.5f;
+
+			if(evt.slot == 3){
+				
+				syncBipedModels(ClientProxy.stoneModel, evt.renderer.modelBipedMain);
+				Minecraft.getMinecraft().renderEngine.bindTexture(((ItemPowerMask)evt.stack.getItem()).getSkin());
+				GL11.glPushMatrix();
+				GL11.glScalef(0.3f, 0.3f, 0.3f);
+				GL11.glTranslatef(0, 3.5f, 0);
+				ClientProxy.stoneModel.renderModel(0.0625f, tick);
+				GL11.glPopMatrix();
+				evt.result = 0;
+			}
+		}
+
 	}
 
 	@SubscribeEvent
 	public void onLivingUpdateEvent(LivingUpdateEvent evt){
 
-		if(evt.entityLiving instanceof EntityPlayer){
-			if(hasWraithMask((EntityPlayer) evt.entityLiving)){
-				evt.entityLiving.setInvisible(true);
-			}else{
-				evt.entityLiving.setInvisible(false);
-			}
-		}
+//		if(evt.entityLiving instanceof EntityPlayer){
+//			if(hasMask((EntityPlayer) evt.entityLiving)){
+//				evt.entityLiving.setInvisible(true);
+//			}else{
+//				evt.entityLiving.setInvisible(false);
+//			}
+//		}
 	}
 
 	@SubscribeEvent
 	public void onJumpEvent(LivingJumpEvent evt){
-		if(evt.entityLiving instanceof EntityPlayer)
+		if(evt.entityLiving instanceof EntityPlayer){
 			if(hasWraithMask((EntityPlayer) evt.entityLiving))
 				evt.entityLiving.motionY += 0.5f;
+			if(hasStoneMask((EntityPlayer) evt.entityLiving))
+				evt.entityLiving.motionY = 0;
+		}
 	}
 
 	@SubscribeEvent
@@ -93,6 +124,28 @@ public class PowerMaskEvents {
 			return false;
 
 		if(p.inventory.armorInventory[3].getItem() instanceof ItemWraithMask)
+			return true;
+
+		return false;
+	}
+
+	private boolean hasStoneMask(EntityPlayer p){
+
+		if(p.inventory.armorInventory[3] == null)
+			return false;
+
+		if(p.inventory.armorInventory[3].getItem() instanceof ItemStoneMask)
+			return true;
+
+		return false;
+	}
+
+	private boolean hasMask(EntityPlayer p){
+
+		if(p.inventory.armorInventory[3] == null)
+			return false;
+
+		if(p.inventory.armorInventory[3].getItem() instanceof ItemPowerMask)
 			return true;
 
 		return false;
