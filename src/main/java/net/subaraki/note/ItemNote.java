@@ -3,6 +3,7 @@ package net.subaraki.note;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -43,19 +44,25 @@ public class ItemNote extends Item {
 	public IIcon getIcon(ItemStack stack, int pass) {
 
 		Item i = null;
+		Block b = null;
 		if(stack.hasTagCompound()){
-			i = Item.getItemById(stack.getTagCompound().getInteger(StackUtils.ITM));
+			i = Item.getItemById(stack.getTagCompound().getShort(StackUtils.ITM));
+			b = Block.getBlockById(stack.getTagCompound().getShort(StackUtils.ITM));
 		}
 
 		IIcon icon = null;
-		if( i != null){
-			if(i.getIcon(stack, 0) != null)
-				icon = i.getIcon(stack, 0);
-			else if( i.getIcon(stack, 1) != null)
-				icon = i.getIcon(stack, 1);
+		if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
+			if( i != null){
+				if(i.getIcon(stack, 0) != null)
+					icon = i.getIcon(stack, 0);
+				else if( i.getIcon(stack, 1) != null)
+					icon = i.getIcon(stack, 1);
+			}
+			else
+				icon = itemIcon;
+		}else{
+			icon = b.getBlockTextureFromSide(0);
 		}
-		else
-			icon = itemIcon;
 
 		return pass == 0 ? super.getIcon(stack, 0) : icon;
 	}
@@ -73,7 +80,7 @@ public class ItemNote extends Item {
 		if(par1ItemStack.hasTagCompound())
 			par3List.add("Item Damaged ? " + 
 					(par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG) > 0 ? "Yes," + " " +
-							par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG)	
+							par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG)
 							: "No"));
 	}
 
