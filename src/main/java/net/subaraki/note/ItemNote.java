@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -32,6 +31,30 @@ public class ItemNote extends Item {
 			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
 
 		return s.length() > 0 ? "Noted " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses() {
+		return true;
+	}
+
+	@Override
+	public IIcon getIcon(ItemStack stack, int pass) {
+
+		Item i = null;
+		if(stack.hasTagCompound()){
+			i = Item.getItemById(stack.getTagCompound().getInteger(StackUtils.ITM));
+		}
+		
+		IIcon icon = null;
+		
+		if(i.getIcon(stack, 0) != null)
+			icon = i.getIcon(stack, 0);
+		else if( i.getIcon(stack, 1) != null)
+			icon = i.getIcon(stack, 1);
+			
+		return pass == 0 ? super.getIcon(stack, 0) : icon;
 	}
 
 	@Override
