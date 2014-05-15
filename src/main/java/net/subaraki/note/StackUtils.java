@@ -12,7 +12,7 @@ public class StackUtils {
 	public StackUtils(){
 	}
 
-	public NBTTagCompound createNotedNbt(int amt, String name, int damage, byte itemid){
+	public NBTTagCompound createNotedNbt(int amt, String name, int damage, short itemid){
 		NBTTagCompound tag = new NBTTagCompound();
 
 		tag.setInteger(AMT, amt);

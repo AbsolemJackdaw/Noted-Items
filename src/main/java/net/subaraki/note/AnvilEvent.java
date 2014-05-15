@@ -37,15 +37,13 @@ public class AnvilEvent {
 						evt.right.stackSize + size, 
 						evt.right.getDisplayName(), 
 						evt.right.getItemDamage(),
-						(byte) Item.getIdFromItem(evt.right.getItem()));
+						(short) Item.getIdFromItem(evt.right.getItem()));
 
 				ItemStack noted = new ItemStack(Notes.note, 1,0);
 				noted.stackTagCompound = tag;
+				
 				evt.output = noted;
-			}else if(evt.left.getItem().equals(Notes.note) && evt.right.getItem().equals(Notes.note)){
-				ItemStack st = new ItemStack(Blocks.gold_block);
-				st.stackSize = 64;
-				evt.output = st;
+				
 			}
 		}
 	}

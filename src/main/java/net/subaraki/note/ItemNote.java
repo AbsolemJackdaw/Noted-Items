@@ -8,7 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,6 +20,18 @@ public class ItemNote extends Item {
 	//item stored
 	//number of items
 	public ItemNote() {
+
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack par1ItemStack) {
+
+		String s = "";
+
+		if(par1ItemStack.hasTagCompound())
+			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
+
+		return s.length() > 0 ? "Noted " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
 	}
 
 	@Override
@@ -46,18 +60,19 @@ public class ItemNote extends Item {
 
 			if(stack.hasTagCompound()){
 				Item item = Item.getItemById(stack.getTagCompound().getShort(StackUtils.ITM));
-				Block block = Block.getBlockById(stack.getTagCompound().getShort(StackUtils.ITM));
-				
+
 				ItemStack st = new ItemStack(item);
 				st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT);
 				st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
 				EntityItem ei = new EntityItem(world, x, y, z, st);
 				if(!world.isRemote)
 					world.spawnEntityInWorld(ei);
+
+				player.setCurrentItemOrArmor(0, new ItemStack(Notes.note));
+				return true;
 			}
 		}
-
-		return true;
+		return false;
 	}
 
 }
