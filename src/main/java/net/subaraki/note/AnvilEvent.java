@@ -41,9 +41,33 @@ public class AnvilEvent {
 
 				ItemStack noted = new ItemStack(Notes.note, 1,0);
 				noted.stackTagCompound = tag;
-				
+
 				evt.output = noted;
-				
+
+			}else if (evt.left.getItem().equals(Notes.note) && evt.right.getItem().equals(Notes.note)){
+				if(evt.left.hasTagCompound() && evt.right.hasTagCompound()){
+					if(evt.left.getTagCompound().getString(StackUtils.ID).equals(evt.right.getTagCompound().getString(StackUtils.ID))){
+						if(evt.left.getTagCompound().getInteger(StackUtils.DMG) == evt.right.getTagCompound().getInteger(StackUtils.DMG)){
+
+							ItemStack noted = new ItemStack(Notes.note, 1,0);
+							NBTTagCompound tag = new StackUtils().createNotedNbt(
+									0, 
+									evt.right.getDisplayName(), 
+									evt.right.getItemDamage(),
+									(short) Item.getIdFromItem(Item.getItemById(evt.right.getTagCompound().getShort(StackUtils.ITM))));
+
+
+							tag.setInteger(StackUtils.AMT, 
+									evt.left.getTagCompound().getInteger(StackUtils.AMT) + 
+									evt.right.getTagCompound().getInteger(StackUtils.AMT));
+
+							noted.setTagCompound(tag);
+
+							evt.output = noted;
+							evt.cost = 0;
+						}
+					}
+				}
 			}
 		}
 	}

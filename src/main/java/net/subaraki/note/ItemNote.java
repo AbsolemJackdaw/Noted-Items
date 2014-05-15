@@ -19,7 +19,7 @@ public class ItemNote extends Item {
 	//item stored
 	//number of items
 	public ItemNote() {
-
+		maxStackSize = 1;
 	}
 
 	@Override
@@ -46,14 +46,17 @@ public class ItemNote extends Item {
 		if(stack.hasTagCompound()){
 			i = Item.getItemById(stack.getTagCompound().getInteger(StackUtils.ITM));
 		}
-		
+
 		IIcon icon = null;
-		
-		if(i.getIcon(stack, 0) != null)
-			icon = i.getIcon(stack, 0);
-		else if( i.getIcon(stack, 1) != null)
-			icon = i.getIcon(stack, 1);
-			
+		if( i != null){
+			if(i.getIcon(stack, 0) != null)
+				icon = i.getIcon(stack, 0);
+			else if( i.getIcon(stack, 1) != null)
+				icon = i.getIcon(stack, 1);
+		}
+		else
+			icon = itemIcon;
+
 		return pass == 0 ? super.getIcon(stack, 0) : icon;
 	}
 
