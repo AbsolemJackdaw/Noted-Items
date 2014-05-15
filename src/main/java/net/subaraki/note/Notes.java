@@ -22,7 +22,6 @@ public class Notes {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent e){
-	
 		new AnvilEvent();
 	}
 	

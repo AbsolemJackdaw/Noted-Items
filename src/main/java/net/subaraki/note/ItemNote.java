@@ -2,11 +2,14 @@ package net.subaraki.note;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemNote extends Item {
 
@@ -32,5 +35,21 @@ public class ItemNote extends Item {
 							: "No"));
 	}
 
+	@Override
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player,
+			World world, int x, int y, int z, int side, float hitX, float hitY,
+			float hitZ) {
+
+		if(world.getBlock(x, y, z).equals(Blocks.anvil)){
+			if(stack.hasTagCompound()){
+				ItemStack st = new ItemStack(Item.getItemById(stack.getTagCompound().getByte(StackUtils.ITM)));
+				st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT);
+				st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
+			}
+			return true;
+		}
+
+		return false;
+	}
 
 }
