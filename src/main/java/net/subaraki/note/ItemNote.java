@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -17,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemNote extends Item {
 
-	IIcon blockicon;
+	private IIcon blockicon;
 
 	//item stored
 	//number of items
@@ -32,8 +33,7 @@ public class ItemNote extends Item {
 
 		if(par1ItemStack.hasTagCompound())
 			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
-		//		I18n.format("noted.item") +
-		return s.length() > 0 ?  " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
+		return s.length() > 0 ?  I18n.format("noted.item") + " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
 	}
 
 	@Override
@@ -46,6 +46,7 @@ public class ItemNote extends Item {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
 		blockicon = par1IconRegister.registerIcon("noteditems:block");
+		itemIcon = par1IconRegister.registerIcon("map_empty");
 	}
 
 	@Override
@@ -59,20 +60,23 @@ public class ItemNote extends Item {
 		}
 
 		IIcon icon = null;
-		if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
-			if( i != null){
-				if(i.getIcon(stack, 0) != null)
-					icon = i.getIcon(stack, 0);
-				else if( i.getIcon(stack, 1) != null)
-					icon = i.getIcon(stack, 1);
+		if(b != null || i != null){
+			if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
+				if( i != null){
+					if(i.getIcon(stack, 0) != null)
+						icon = i.getIcon(stack, 0);
+					else if( i.getIcon(stack, 1) != null)
+						icon = i.getIcon(stack, 1);
+				}else
+					icon = super.getIcon(stack, 0);
+			}else{
+				icon = blockicon;
 			}
-			else
-				icon = itemIcon;
 		}else{
-			icon = blockicon;
+			icon = super.getIcon(stack, 0);
 		}
 
-		return pass == 0 ? super.getIcon(stack, 0) : icon == null ? super.getIcon(stack, 0) : icon;
+		return pass == 0 ? super.getIcon(stack, 0) : icon;
 	}
 
 	@Override
@@ -106,6 +110,7 @@ public class ItemNote extends Item {
 				st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT);
 				st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
 				EntityItem ei = new EntityItem(world, x, y, z, st);
+				
 				if(!world.isRemote)
 					world.spawnEntityInWorld(ei);
 

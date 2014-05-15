@@ -8,7 +8,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = "notedItems", name = "Noted Items", version = "ModJamBeta")
+@Mod(modid = "noteditems", name = "Noted Items", version = "ModJamBeta")
 public class Notes {
 
 	public static Item note;
