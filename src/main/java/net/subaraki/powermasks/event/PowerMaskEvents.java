@@ -90,10 +90,33 @@ public class PowerMaskEvents {
 	
 	
 	private void syncBipedModels(ModelBiped model1, ModelBiped model2){
-		for(int i = 0; i < model1.boxList.size(); i ++){
-			((ModelRenderer)model1.boxList.get(i)).rotateAngleX = ((ModelRenderer)model2.boxList.get(i)).rotateAngleX;
-			((ModelRenderer)model1.boxList.get(i)).rotateAngleY = ((ModelRenderer)model2.boxList.get(i)).rotateAngleY;
-			((ModelRenderer)model1.boxList.get(i)).rotateAngleZ = ((ModelRenderer)model2.boxList.get(i)).rotateAngleZ;
-		}
+		model1.bipedHead.rotateAngleX = model2.bipedHead.rotateAngleX;
+		model1.bipedHead.rotateAngleY = model2.bipedHead.rotateAngleY;
+		model1.bipedHead.rotateAngleZ = model2.bipedHead.rotateAngleZ;
+
+		model1.bipedHeadwear.rotateAngleX = model2.bipedHeadwear.rotateAngleX;
+		model1.bipedHeadwear.rotateAngleY = model2.bipedHeadwear.rotateAngleY;
+		model1.bipedHeadwear.rotateAngleZ = model2.bipedHeadwear.rotateAngleZ;
+
+		model1.bipedLeftArm.rotateAngleX = model2.bipedLeftArm.rotateAngleX;
+		model1.bipedLeftArm.rotateAngleY = model2.bipedLeftArm.rotateAngleY;
+		model1.bipedLeftArm.rotateAngleZ = model2.bipedLeftArm.rotateAngleZ;
+
+		model1.bipedRightArm.rotateAngleX = model2.bipedRightArm.rotateAngleX;
+		model1.bipedRightArm.rotateAngleY = model2.bipedRightArm.rotateAngleY;
+		model1.bipedRightArm.rotateAngleZ = model2.bipedRightArm.rotateAngleZ;
+		
+		model1.bipedLeftLeg.rotateAngleX = model2.bipedLeftLeg.rotateAngleX;
+		model1.bipedLeftLeg.rotateAngleY = model2.bipedLeftLeg.rotateAngleY;
+		model1.bipedLeftLeg.rotateAngleZ = model2.bipedLeftLeg.rotateAngleZ;
+		
+		model1.bipedRightLeg.rotateAngleX = model2.bipedRightLeg.rotateAngleX;
+		model1.bipedRightLeg.rotateAngleY = model2.bipedRightLeg.rotateAngleY;
+		model1.bipedRightLeg.rotateAngleZ = model2.bipedRightLeg.rotateAngleZ;
+		
+		model1.bipedBody.rotateAngleX = model2.bipedBody.rotateAngleX;
+		model1.bipedBody.rotateAngleY = model2.bipedBody.rotateAngleY;
+		model1.bipedBody.rotateAngleZ = model2.bipedBody.rotateAngleZ;
+		
 	}
 }
