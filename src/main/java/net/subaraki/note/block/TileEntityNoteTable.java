@@ -14,7 +14,7 @@ import net.subaraki.note.StackUtils;
 
 public class TileEntityNoteTable extends TileEntity implements IInventory {
 
-	ItemStack slots[] = new ItemStack[11];
+	ItemStack slots[] = new ItemStack[12];
 
 	private boolean hasResult;
 
@@ -24,7 +24,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public int getSizeInventory() {
 
-		return 11;
+		return 12;
 	}
 
 	@Override

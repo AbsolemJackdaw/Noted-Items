@@ -16,6 +16,7 @@ public class NoteContainer extends Container {
 		this.addSlotToContainer(new NoteSlot(te, 0, 32, 34));
 		
 		this.addSlotToContainer(new SlotResult(te, 10, 144, 34));
+		this.addSlotToContainer(new SlotResult(te, 11, 32, 34));
 
 		for (int l = 0; l < 3; ++l)
 			for (int i1 = 0; i1 < 3; ++i1)
