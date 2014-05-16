@@ -19,24 +19,19 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	ItemStack slots[] = new ItemStack[12];
 
-	private boolean hasResult;
-
 	@Override
 	public int getSizeInventory() {
-
 		return 12;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int var1) {
-
 		return slots[var1];
 	}
 
-
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
-
+		markDirty();
 		if(slot == 10){
 			for(int i = 0; i < 10; i ++)
 				slots[i] = null;
@@ -58,7 +53,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
-
 		return slots[var1];
 	}
 
@@ -69,7 +63,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 		if ((stack != null) && (stack.stackSize > getInventoryStackLimit()))
 			stack.stackSize = getInventoryStackLimit();
-
+		markDirty();
 	}
 
 	@Override
@@ -110,13 +104,12 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-
 		return true;
 	}
 
 	@Override
 	public void updateEntity() {
-
+		markDirty();
 		craft();
 	}
 
@@ -144,7 +137,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						if(!(sample.getItem() instanceof ItemNote))
 							if(! new StackUtils().itemEqualsNoteNBT(sample, note.stackTagCompound)){
 								setInventorySlotContents(10, null);
-								hasResult = false;
 								return;
 							}
 
@@ -177,15 +169,12 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						noted.stackTagCompound = tag;
 
 						setInventorySlotContents(10, noted);
-						hasResult = true;
 					}else{
 						setInventorySlotContents(10, null);
-						hasResult = false;
 					}
 				}
 				else{
 					setInventorySlotContents(10, null);
-					hasResult = false;
 				}
 			}
 		}else if ((reverse != null) && (note == null) && (reverse.stackSize == 1)){
@@ -201,19 +190,31 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 				int substractamt = 0;
 
-				for(int i = 0; i < lenght; i ++){
+
+
+				//size of all stacks included 32
+				//size of a stack 64
+				//size of all slots = 9
+				//size of total stacks = 1
+				//run code for all stacks
+				//get size from allstacks
+
+				for(int slot = 1; slot < 10; slot++ ){
+					int index = slot-1;
 
 					ItemStack st = new ItemStack(item);
-					st.stackSize = Math.min(64, stackamt- (i*64));
+					st.stackSize = Math.min(64, stackamt- (index*64));
+
 					st.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
-
-					for(int slot = 1; slot < 10; slot ++)
-						if(getStackInSlot(slot) == null){
-							setInventorySlotContents(slot, st);
-							substractamt += st.stackSize;
-							reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt - substractamt);
-
-						}
+					
+					if(st.stackSize <= 0)
+						st = null;
+					
+					if(getStackInSlot(slot) == null && st != null){
+						setInventorySlotContents(slot, st);
+						substractamt += st.stackSize;
+						reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt - substractamt);
+					}
 				}
 
 				if(reverse.getTagCompound().getInteger(StackUtils.AMT) <= 0)
@@ -223,10 +224,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 			}
 		}else{
 			setInventorySlotContents(10, null);
-			hasResult = false;
 		}
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
@@ -254,7 +254,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		}
 		nbt.setTag("Inventory", itemList);
 	}
-	
+
 	@Override
 	public boolean canUpdate() {
 		return true;
