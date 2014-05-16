@@ -30,11 +30,11 @@ public class Notes {
 	@SidedProxy(clientSide = "net.subaraki.note.proxy.ClientProxy", serverSide = "net.subaraki.note.proxy.ServerProxy")
 	public static ServerProxy proxy;
 
-	@Mod.Instance(Reference.MOD_ID)
 	public static Notes instance;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e){
+		instance = this;
 		addItems();
 		addBlocks();
 		registerItems();
