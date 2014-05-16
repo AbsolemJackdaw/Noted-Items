@@ -1,5 +1,6 @@
 package net.subaraki.note;
 
+import net.darkhax.elysian.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,6 +16,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 
@@ -28,6 +30,9 @@ public class Notes {
 	@SidedProxy(clientSide = "net.subaraki.note.proxy.ClientProxy", serverSide = "net.subaraki.note.proxy.ServerProxy")
 	public static ServerProxy proxy;
 
+	@Mod.Instance(Reference.MOD_ID)
+	public static Notes instance;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e){
 		addItems();
@@ -41,7 +46,7 @@ public class Notes {
 		new AnvilEvent();
 		GameRegistry.registerTileEntity(TileEntityNoteTable.class, "notingTable");
 		proxy.registerRendering();
-		GameRegistry.regis
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 	}
 
 	private void addItems(){

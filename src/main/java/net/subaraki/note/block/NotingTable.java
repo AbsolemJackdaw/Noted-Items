@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.subaraki.note.Notes;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class NotingTable extends Block{
@@ -22,6 +23,7 @@ public class NotingTable extends Block{
 			float p_149727_9_) {
 
 		
+		player.openGui(Notes.instance, 0, world, x, y, z);
 		
 		return true;
 	}
