@@ -6,6 +6,9 @@ import net.minecraft.inventory.Container;
 public class NoteContainer extends Container {
 
 	public NoteContainer() {
+		
+		
+		
 	}
 
 	@Override
