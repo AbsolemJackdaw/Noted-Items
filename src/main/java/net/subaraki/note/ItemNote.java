@@ -63,10 +63,7 @@ public class ItemNote extends Item {
 		if(b != null || i != null){
 			if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
 				if( i != null){
-					if(i.getIcon(stack, 0) != null)
-						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), 0);
-					else if( i.getIcon(stack, 1) != null)
-						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), 1);
+					icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), pass);
 				}else
 					icon = super.getIcon(stack, 0);
 			}else{
@@ -119,5 +116,10 @@ public class ItemNote extends Item {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public int getRenderPasses(int metadata) {
+		return 3;
 	}
 }
