@@ -37,11 +37,34 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int var1, ItemStack var2) {
+	public void setInventorySlotContents(int slot, ItemStack stack) {
 		
+		slots[slot] = stack;
+
+		if ((stack != null) && (stack.stackSize > getInventoryStackLimit()))
+			stack.stackSize = getInventoryStackLimit();
 		
 	}
 
+	public void addInventorySlotContents(int slot, ItemStack stack) {
+
+		if (slots[slot] == null) {
+			setInventorySlotContents(slot, stack);
+			return;
+		}
+
+		if (slots[slot].stackSize + stack.stackSize <= 64) {
+			slots[slot].stackSize += stack.stackSize;
+			return;
+		}
+		else {
+			int rest = slots[slot].stackSize + stack.stackSize - 64;
+			stack.stackSize = rest;
+			slots[slot].stackSize = 64;
+			return;
+		}
+	}
+	
 	@Override
 	public String getInventoryName() {
 		

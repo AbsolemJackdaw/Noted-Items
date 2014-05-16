@@ -1,5 +1,6 @@
 package net.subaraki.note.block;
 
+import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,23 +14,19 @@ public class NoteContainer extends Container {
 
 		InventoryPlayer inv = player.inventory;
 
+
 		this.addSlotToContainer(new Slot(te, 0, 32, 34));
 
-		for (int i = 0; i < 3; i++) {
-			for (int k = 0; k < 3; k++) {
-				this.addSlotToContainer(new Slot(te, 0, 78 + i *16, 16 + k*16));
-			}
-		}
+		for (int l = 0; l < 3; ++l)
+			for (int i1 = 0; i1 < 3; ++i1)
+				this.addSlotToContainer(new Slot(te, i1 + l * 3, 78 + i1 * 18, 16 + l * 18));
 
-		for (int i = 0; i < 3; i++) {
-			for (int k = 0; k < 9; k++) {
-				addSlotToContainer(new Slot(inv, k + (i * 9) + 9, 8 + (k * 18), 68 + (i * 18) + 18));
-			}
-		}
+		for (int i = 0; i < 3; i++) 
+			for (int k = 0; k < 9; k++)
+				addSlotToContainer(new Slot(inv, k + (i * 9) + 9, 8 + (k * 18), 68 - 2 + (i * 18) + 18));
 
-		for (int j = 0; j < 9; j++) {
-			addSlotToContainer(new Slot(inv, j, 8 + (j * 18), 126 + 18));
-		}
+		for (int j = 0; j < 9; j++)
+			addSlotToContainer(new Slot(inv, j, 8 + (j * 18), 126 - 2 + 18));
 	}
 
 	@Override
