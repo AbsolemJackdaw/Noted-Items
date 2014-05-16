@@ -28,5 +28,16 @@ public class StackUtils {
 		return tag;
 	}
 
+	public NBTTagCompound fuseNbt(NBTTagCompound tag1, NBTTagCompound tag2) {
+		NBTTagCompound tag = new NBTTagCompound();
+
+		tag.setInteger(AMT, tag1.getInteger(AMT) + tag2.getInteger(AMT));
+		tag.setString(ID, tag1.getString(ID));
+		tag.setInteger(DMG, tag1.getInteger(DMG));
+		tag.setShort(ITM, tag1.getShort(ITM));
+		
+		return tag;
+	}
+
 
 }

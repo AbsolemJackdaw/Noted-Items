@@ -1,14 +1,25 @@
 package net.subaraki.note.block;
 
+import java.util.ArrayList;
+
+import scala.xml.persistent.SetStorage;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.subaraki.note.ItemNote;
+import net.subaraki.note.Notes;
+import net.subaraki.note.StackUtils;
 
 public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 	ItemStack slots[] = new ItemStack[10];
+
+	private boolean hasResult;
 
 	public TileEntityNoteTable() {
 	}
@@ -16,7 +27,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public int getSizeInventory() {
 
-		return 10;
+		return 11;
 	}
 
 	@Override
@@ -24,6 +35,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 		return slots[var1];
 	}
+
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
@@ -36,7 +48,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 			{
 				itemstack = this.slots[slot];
 				this.slots[slot] = null;
-				this.markDirty();
 				return itemstack;
 			}
 			else
@@ -48,7 +59,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 					this.slots[slot] = null;
 				}
 
-				this.markDirty();
 				return itemstack;
 			}
 		}
@@ -142,21 +152,64 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 	}
 
+	ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+
 	public void craft(){
 		int amt = 0;
 
 		ItemStack note = getStackInSlot(0);
-		
+
 		if(note != null){
 			if(note.getItem() instanceof ItemNote){
-				
-				for(ItemStack stack : slots){
-					if(stack != null){
-						
+
+				ItemStack sample = null;
+				for(int i = 1; i < 10; i++){
+					if(getStackInSlot(i) != null){
+						sample = getStackInSlot(i);
+						break;
 					}
+				}
+
+				int amount = 0;
+
+				if(sample != null){
+
+					for(int i = 1; i < 10; i++){
+						if(getStackInSlot(i) != null){
+							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
+								sample = null;
+								break;
+							}
+							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage()){
+								amount += getStackInSlot(i).stackSize;
+							}
+						}
+					}
+					if(sample != null){
+						NBTTagCompound tag = new StackUtils().createNotedNbt(
+								amount, 
+								sample.getDisplayName(), 
+								sample.getItemDamage(),
+								(short) Item.getIdFromItem(sample.getItem()));
+						
+						if(note.hasTagCompound())
+							tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
+						
+						ItemStack noted = new ItemStack(Notes.note, 1,0);
+						noted.stackTagCompound = tag;
+
+						setInventorySlotContents(0, noted);
+						hasResult = true;
+					}else{
+						//setInventorySlotContents(0, note);
+						hasResult = false;
+					}
+				}
+				else{
+					//setInventorySlotContents(0, note);
+					hasResult = false;
 				}
 			}
 		}
 	}
-
 }
