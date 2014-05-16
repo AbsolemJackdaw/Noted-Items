@@ -1,6 +1,7 @@
 package net.subaraki.note.block;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,11 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 	public TileEntityNoteTable() {
 
+		for(int i = 0; i < 12; i ++){
+			ItemStack st = new ItemStack(Blocks.wool,1,5);
+			st.stackSize = 64;
+			slots[i] = st;
+		}
 	}
 
 	@Override

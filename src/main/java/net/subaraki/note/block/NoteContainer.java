@@ -12,7 +12,6 @@ public class NoteContainer extends Container {
 
 		InventoryPlayer inv = player.inventory;
 
-
 		this.addSlotToContainer(new NoteSlot(te, 0, 32, 16));
 
 		this.addSlotToContainer(new SlotResult(te, 10, 144, 32));
@@ -33,6 +32,12 @@ public class NoteContainer extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
 		return true;
+	}
+	
+	
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+		return null;
 	}
 	
 }
