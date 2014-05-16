@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.subaraki.note.block.BlockNotingTable;
 import net.subaraki.note.block.inventory.TileEntityNoteTable;
+import net.subaraki.note.item.ItemNote;
 import net.subaraki.note.proxy.ServerProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

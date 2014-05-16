@@ -3,7 +3,7 @@ package net.subaraki.note.block.inventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.subaraki.note.ItemNote;
+import net.subaraki.note.item.ItemNote;
 
 public class SlotNote extends Slot {
 

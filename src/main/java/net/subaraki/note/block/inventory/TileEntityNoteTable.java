@@ -11,9 +11,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.subaraki.note.ItemNote;
 import net.subaraki.note.Notes;
 import net.subaraki.note.StackUtils;
+import net.subaraki.note.item.ItemNote;
 
 public class TileEntityNoteTable extends TileEntity implements IInventory{
 
