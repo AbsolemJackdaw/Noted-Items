@@ -2,10 +2,7 @@ package net.subaraki.note.block;
 
 import java.util.ArrayList;
 
-import scala.xml.persistent.SetStorage;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -165,8 +162,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 		int amt = 0;
 
 		ItemStack note = getStackInSlot(0);
-
-		if(note != null){
+		ItemStack reverse = getStackInSlot(11);
+		
+		if(note != null && note.stackSize == 1){
 			if(note.getItem() instanceof ItemNote){
 
 				ItemStack sample = null;
@@ -196,17 +194,17 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 								sample = null;
 								break;
 							}
-							
+
 							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage()){
 								if(getStackInSlot(i).getItem() instanceof ItemNote && getStackInSlot(i).hasTagCompound()){
 									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
 										amount += getStackInSlot(i).getTagCompound().getInteger(StackUtils.AMT);
 								}else
 									amount += getStackInSlot(i).stackSize;
-
 							}
 						}
 					}
+					
 					if(sample != null){
 						NBTTagCompound tag = new StackUtils().createNotedNbt(
 								amount, 

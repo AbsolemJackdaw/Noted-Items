@@ -1,9 +1,9 @@
 package net.subaraki.note;
 
-import net.darkhax.elysian.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,6 +39,7 @@ public class Notes {
 		addBlocks();
 		registerItems();
 		registerBlocks();
+		addRecipes();
 	}
 
 	@EventHandler
@@ -69,5 +70,7 @@ public class Notes {
 		GameRegistry.addRecipe(new ItemStack(note), new Object[]{
 			"xxx","xpx","xxx", 'x', Items.paper, 'p' , Items.feather
 		});
+		
+		GameRegistry.addRecipe(new ItemStack(table), new Object[]{"xnx","x x","x x", 'x', Blocks.planks, 'n', note});
 	}
 }

@@ -1,13 +1,10 @@
 package net.subaraki.note.block;
 
-import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class NoteContainer extends Container {
 
