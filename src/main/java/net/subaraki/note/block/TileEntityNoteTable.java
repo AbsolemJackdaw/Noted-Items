@@ -6,25 +6,20 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.subaraki.note.ItemNote;
 import net.subaraki.note.Notes;
 import net.subaraki.note.StackUtils;
 
-public class TileEntityNoteTable extends TileEntity implements IInventory {
+public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	ItemStack slots[] = new ItemStack[12];
 
 	private boolean hasResult;
-
-	public TileEntityNoteTable() {
-
-		for(int i = 0; i < 12; i ++){
-			ItemStack st = new ItemStack(Blocks.wool,1,5);
-			st.stackSize = 64;
-			slots[i] = st;
-		}
-	}
 
 	@Override
 	public int getSizeInventory() {
@@ -212,8 +207,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 					st.stackSize = Math.min(64, stackamt- (i*64));
 					st.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
 
-					System.out.println(i + " "+ st.stackSize);
-
 					for(int slot = 1; slot < 10; slot ++)
 						if(getStackInSlot(slot) == null){
 							setInventorySlotContents(slot, st);
@@ -232,5 +225,50 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 			setInventorySlotContents(10, null);
 			hasResult = false;
 		}
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		NBTTagList tagList = nbt.getTagList("Inventory", 10);
+		for (int i = 0; i < tagList.tagCount(); i++) {
+			NBTTagCompound tag = tagList.getCompoundTagAt(i);
+			byte slot = tag.getByte("Slot");
+			if ((slot >= 0) && (slot < slots.length))
+				slots[slot] = ItemStack.loadItemStackFromNBT(tag);
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		NBTTagList itemList = new NBTTagList();
+		for (int i = 0; i < slots.length; i++) {
+			ItemStack stack = slots[i];
+			if (stack != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setByte("Slot", (byte) i);
+				stack.writeToNBT(tag);
+				itemList.appendTag(tag);
+			}
+		}
+		nbt.setTag("Inventory", itemList);
+	}
+	
+	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		this.writeToNBT(nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.func_148857_g()); 
 	}
 }
