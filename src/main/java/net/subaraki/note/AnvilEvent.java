@@ -30,7 +30,7 @@ public class AnvilEvent {
 					int size = 0;
 					if(evt.left.hasTagCompound())
 						size = evt.left.getTagCompound().getInteger(StackUtils.AMT);
-					
+
 					int amt = evt.right.stackSize + size;
 					NBTTagCompound tag = new StackUtils().createNotedNbt(
 							amt, 
@@ -38,9 +38,8 @@ public class AnvilEvent {
 							evt.right.getItemDamage(),
 							(short) Item.getIdFromItem(evt.right.getItem()));
 
-					
-					evt.cost = amt / 64; 
-							
+					evt.cost = (amt / 64) == 0 ? 1 : amt/64;
+
 					ItemStack noted = new ItemStack(Notes.note, 1,0);
 					noted.stackTagCompound = tag;
 
@@ -54,19 +53,19 @@ public class AnvilEvent {
 								ItemStack noted = new ItemStack(Notes.note, 1,0);
 								NBTTagCompound tag = new StackUtils().createNotedNbt(
 										0, 
-										evt.right.getDisplayName(), 
-										evt.right.getItemDamage(),
+										evt.right.getTagCompound().getString(StackUtils.ID), 
+										evt.right.getTagCompound().getInteger(StackUtils.DMG),
 										(short) Item.getIdFromItem(Item.getItemById(evt.right.getTagCompound().getShort(StackUtils.ITM))));
 
-
-								tag.setInteger(StackUtils.AMT, 
-										evt.left.getTagCompound().getInteger(StackUtils.AMT) + 
-										evt.right.getTagCompound().getInteger(StackUtils.AMT));
+								int amt = evt.left.getTagCompound().getInteger(StackUtils.AMT) + 
+										evt.right.getTagCompound().getInteger(StackUtils.AMT);
+								
+								tag.setInteger(StackUtils.AMT, amt);
 
 								noted.setTagCompound(tag);
 
 								evt.output = noted;
-								evt.cost = 0;
+								evt.cost = (amt / 64) == 0 ? 1 : amt/64;
 							}
 						}
 					}
@@ -74,5 +73,4 @@ public class AnvilEvent {
 			}
 		}
 	}
-
 }

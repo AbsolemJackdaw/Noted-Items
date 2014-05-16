@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,7 +23,19 @@ public class ItemNote extends Item {
 	private IIcon emptyIcon;
 
 	public ItemNote() {
-		maxStackSize = 6;
+		maxStackSize = 16;
+	}
+
+	@Override
+	public void onUpdate(ItemStack par1ItemStack, World par2World,
+			Entity par3Entity, int par4, boolean par5) {
+		super.onUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+
+		if(par1ItemStack.stackSize > 1)
+			if(par1ItemStack.hasTagCompound())
+				if(par1ItemStack.getTagCompound().hasKey(StackUtils.ID)){
+					par1ItemStack.getItem().setMaxStackSize(1);
+				}
 	}
 
 	@Override
@@ -107,14 +120,18 @@ public class ItemNote extends Item {
 			if(stack.hasTagCompound()){
 				Item item = Item.getItemById(stack.getTagCompound().getShort(StackUtils.ITM));
 
-				ItemStack st = new ItemStack(item);
-				st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT);
-				st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
-				EntityItem ei = new EntityItem(world, x, y, z, st);
-
-				if(!world.isRemote)
-					world.spawnEntityInWorld(ei);
-
+				int lenght = (stack.getTagCompound().getInteger(StackUtils.AMT)/64) + 1;
+				
+				for(int i = 0; i < lenght; i ++){
+					ItemStack st = new ItemStack(item);
+					st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT) - 64*i;
+					st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
+					EntityItem ei = new EntityItem(world, x, y, z, st);
+					
+					if(!world.isRemote)
+						world.spawnEntityInWorld(ei);
+				}
+				
 				player.setCurrentItemOrArmor(0, new ItemStack(Notes.note));
 				return true;
 			}
