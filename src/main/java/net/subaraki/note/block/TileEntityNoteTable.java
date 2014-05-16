@@ -94,13 +94,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	public void addInventorySlotContents(int slot, ItemStack stack) {
 		//
 		//		if (slots[slot] == null) {
-		//			setInventorySlotContents(slot, stack);
-		//			return;
-		//		}
+			//			setInventorySlotContents(slot, stack);
+			//			return;
+			//		}
 		//
 		//		if (slots[slot].stackSize + stack.stackSize <= 64) {
-		//			slots[slot].stackSize += stack.stackSize;
-		//			return;
+			//			slots[slot].stackSize += stack.stackSize;
+			//			return;
 		//		}
 		//		else {
 		//			int rest = slots[slot].stackSize + stack.stackSize - 64;
@@ -237,24 +237,32 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 				Item item = Item.getItemById(reverse.getTagCompound().getShort(StackUtils.ITM));
 				int stackamt = reverse.getTagCompound().getInteger(StackUtils.AMT);
-				int lenght = (stackamt/64) + 1;
 
+				ItemStack stub = new ItemStack(item);
+				int max = stub.getMaxStackSize();
+
+				int lenght = (stackamt/max)+1;
+
+				int substractamt = 0;
 
 				for(int i = 0; i < lenght; i ++){
+
 					ItemStack st = new ItemStack(item);
-					st.stackSize = stackamt > 64 ? 64 : stackamt;
+					st.stackSize = Math.min(64, stackamt- (i*64));
 					st.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
 
 					System.out.println(i + " "+ st.stackSize);
-					
-//					if(i < 10 && i > 0){
-						if(getStackInSlot(i) == null){
-//							setInventorySlotContents(i, st);
-//							reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt-(64*i));
-//							
-//							setInventorySlotContents(11, reverse);
+
+					for(int slot = 1; slot < 10; slot ++){
+
+						if(getStackInSlot(slot) == null){
+							setInventorySlotContents(slot, st);
+							substractamt += st.stackSize;
+							reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt - substractamt);
+
+							setInventorySlotContents(11, reverse);
 						}
-//					}
+					}
 				}
 			}
 		}else{
