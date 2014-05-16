@@ -2,11 +2,11 @@ package net.subaraki.note.block;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.tileentity.TileEntity;
 
 public class NoteContainer extends Container {
 
-	public NoteContainer() {
-		
+	public NoteContainer(TileEntity te, EntityPlayer player) {
 		
 		
 	}

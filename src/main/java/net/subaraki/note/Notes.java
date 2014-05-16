@@ -41,6 +41,7 @@ public class Notes {
 		new AnvilEvent();
 		GameRegistry.registerTileEntity(TileEntityNoteTable.class, "notingTable");
 		proxy.registerRendering();
+		GameRegistry.regis
 	}
 
 	private void addItems(){

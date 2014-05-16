@@ -21,7 +21,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public ItemStack getStackInSlot(int var1) {
 		
-		return null;
+		return slots[var1];
 	}
 
 	@Override
@@ -57,13 +57,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public int getInventoryStackLimit() {
 		
-		return 0;
+		return 64;
 	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1) {
 		
-		return false;
+		return true;
 	}
 
 	@Override
@@ -81,7 +81,14 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		
-		return false;
+		return true;
+	}
+	
+	@Override
+	public void updateEntity() {
+
+		
+		
 	}
 
 }
