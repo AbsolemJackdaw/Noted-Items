@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.subaraki.note.ItemNote;
 
 public class TileEntityNoteTable extends TileEntity implements IInventory {
 
@@ -137,12 +138,24 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public void updateEntity() {
 
-
+		craft();
 
 	}
-	
+
 	public void craft(){
-		
+		int amt = 0;
+
+		if(getStackInSlot(0) != null){
+			if(getStackInSlot(0).getItem() instanceof ItemNote){
+
+				for(int i = 1 ; i < 10 ; i ++){
+					if(getStackInSlot(i) != null){
+						amt += getStackInSlot(i).stackSize;
+					}
+				}
+			}
+		}
+
 	}
 
 }
