@@ -1,5 +1,7 @@
 package net.subaraki.note;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class StackUtils {
@@ -35,9 +37,30 @@ public class StackUtils {
 		tag.setString(ID, tag1.getString(ID));
 		tag.setInteger(DMG, tag1.getInteger(DMG));
 		tag.setShort(ITM, tag1.getShort(ITM));
-		
+
 		return tag;
 	}
 
+	public boolean NBTAreEqual(NBTTagCompound tag1, NBTTagCompound tag2){
+
+		if(tag1.getInteger(AMT) == tag2.getInteger(AMT) && 
+				tag1.getInteger(DMG) == tag2.getInteger(DMG) && 
+				tag1.getShort(ITM) == tag2.getShort(ITM) &&
+				tag1.getString(ID).equals(tag2.getString(ID)))
+			return true;
+
+		return false;
+	}
+
+	public boolean itemEqualsNoteNBT(ItemStack stack, NBTTagCompound tag){
+
+		if(tag.getString(ID).equals(stack.getDisplayName()) && 
+				tag.getInteger(DMG) == stack.getItemDamage() && 
+				tag.getShort(ITM) == Item.getIdFromItem(stack.getItem()))
+			return true;
+		
+		
+		return false;
+	}
 
 }

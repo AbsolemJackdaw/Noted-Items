@@ -181,14 +181,29 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 				if(sample != null){
 
+					if(note.hasTagCompound()){		
+						if(!(sample.getItem() instanceof ItemNote))
+							if(! new StackUtils().itemEqualsNoteNBT(sample, note.stackTagCompound)){
+								setInventorySlotContents(10, null);
+								hasResult = false;
+								return;
+							}
+					}
+
 					for(int i = 1; i < 10; i++){
 						if(getStackInSlot(i) != null){
 							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
 								sample = null;
 								break;
 							}
+							
 							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage()){
-								amount += getStackInSlot(i).stackSize;
+								if(getStackInSlot(i).getItem() instanceof ItemNote && getStackInSlot(i).hasTagCompound()){
+									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
+										amount += getStackInSlot(i).getTagCompound().getInteger(StackUtils.AMT);
+								}else
+									amount += getStackInSlot(i).stackSize;
+
 							}
 						}
 					}

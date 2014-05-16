@@ -45,6 +45,7 @@ public class ItemNote extends Item {
 
 		if(par1ItemStack.hasTagCompound())
 			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
+		
 		return s.length() > 0 ?  I18n.format("noted.item") + " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
 	}
 
@@ -99,9 +100,11 @@ public class ItemNote extends Item {
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 
-		if(par1ItemStack.hasTagCompound())
-			par3List.add("Note worth : " + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT) +" "+
-					par1ItemStack.stackTagCompound.getString(StackUtils.ID));
+		if(par1ItemStack.hasTagCompound()){
+			ItemStack s = new ItemStack(Item.getItemById(par1ItemStack.stackTagCompound.getInteger(StackUtils.ITM)));
+			par3List.add("Note worth : " + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT) +" "+ s.getDisplayName()
+					);
+		}
 
 		if(par1ItemStack.hasTagCompound())
 			par3List.add("Item Damaged ? " + 
