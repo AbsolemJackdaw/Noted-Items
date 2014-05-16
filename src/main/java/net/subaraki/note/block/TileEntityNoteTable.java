@@ -1,8 +1,5 @@
 package net.subaraki.note.block;
 
-import java.util.ArrayList;
-
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -38,41 +35,24 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
-		craft();
 
 		if(slot == 10){
-			for(int i = 0; i < 10; i ++){
+			for(int i = 0; i < 10; i ++)
 				slots[i] = null;
-			}
 			return slots[slot];
 		}
 
-		if (this.slots[slot] != null)
-		{
-			ItemStack itemstack;
+		ItemStack stack = getStackInSlot(slot);
 
-			if (this.slots[slot].stackSize <= amt)
-			{
-				itemstack = this.slots[slot];
-				this.slots[slot] = null;
-				return itemstack;
+		if (stack != null)
+			if (stack.stackSize <= amt)
+				setInventorySlotContents(slot, null);
+			else {
+				stack = stack.splitStack(amt);
+				if (stack.stackSize == 0)
+					setInventorySlotContents(slot, null);
 			}
-			else
-			{
-				itemstack = this.slots[slot].splitStack(amt);
-
-				if (this.slots[slot].stackSize == 0)
-				{
-					this.slots[slot] = null;
-				}
-
-				return itemstack;
-			}
-		}
-		else
-		{
-			return null;
-		}
+		return stack;
 	}
 
 	@Override
@@ -89,25 +69,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 		if ((stack != null) && (stack.stackSize > getInventoryStackLimit()))
 			stack.stackSize = getInventoryStackLimit();
 
-	}
-
-	public void addInventorySlotContents(int slot, ItemStack stack) {
-		//
-		//		if (slots[slot] == null) {
-			//			setInventorySlotContents(slot, stack);
-			//			return;
-			//		}
-		//
-		//		if (slots[slot].stackSize + stack.stackSize <= 64) {
-			//			slots[slot].stackSize += stack.stackSize;
-			//			return;
-		//		}
-		//		else {
-		//			int rest = slots[slot].stackSize + stack.stackSize - 64;
-		//			stack.stackSize = rest;
-		//			slots[slot].stackSize = 64;
-		//			return;
-		//		}
 	}
 
 	@Override
@@ -158,59 +119,53 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 		craft();
 	}
 
-	ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
 	public void craft(){
 		int amt = 0;
 
 		ItemStack note = getStackInSlot(0);
 		ItemStack reverse = getStackInSlot(11);
 
-		if(note != null && note.stackSize == 1 && reverse == null){
+		if((note != null) && (note.stackSize == 1) && (reverse == null)){
 			if(note.getItem() instanceof ItemNote){
 
 				ItemStack sample = null;
-				for(int i = 1; i < 10; i++){
+				for(int i = 1; i < 10; i++)
 					if(getStackInSlot(i) != null){
 						sample = getStackInSlot(i);
 						break;
 					}
-				}
 
 				int amount = 0;
 
 				if(sample != null){
 
-					if(note.hasTagCompound()){		
+					if(note.hasTagCompound())
 						if(!(sample.getItem() instanceof ItemNote))
 							if(! new StackUtils().itemEqualsNoteNBT(sample, note.stackTagCompound)){
 								setInventorySlotContents(10, null);
 								hasResult = false;
 								return;
 							}
-					}
 
-					for(int i = 1; i < 10; i++){
+					for(int i = 1; i < 10; i++)
 						if(getStackInSlot(i) != null){
 							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
 								sample = null;
 								break;
 							}
 
-							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage()){
-								if(getStackInSlot(i).getItem() instanceof ItemNote && getStackInSlot(i).hasTagCompound()){
+							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage())
+								if((getStackInSlot(i).getItem() instanceof ItemNote) && getStackInSlot(i).hasTagCompound()){
 									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
 										amount += getStackInSlot(i).getTagCompound().getInteger(StackUtils.AMT);
 								}else
 									amount += getStackInSlot(i).stackSize;
-							}
 						}
-					}
 
 					if(sample != null){
 						NBTTagCompound tag = new StackUtils().createNotedNbt(
-								amount, 
-								sample.getDisplayName(), 
+								amount,
+								sample.getDisplayName(),
 								sample.getItemDamage(),
 								(short) Item.getIdFromItem(sample.getItem()));
 
@@ -232,7 +187,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 					hasResult = false;
 				}
 			}
-		}else if (reverse != null && note == null && reverse.stackSize == 1){
+		}else if ((reverse != null) && (note == null) && (reverse.stackSize == 1)){
 			if(reverse.hasTagCompound()){
 
 				Item item = Item.getItemById(reverse.getTagCompound().getShort(StackUtils.ITM));
@@ -253,17 +208,19 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 					System.out.println(i + " "+ st.stackSize);
 
-					for(int slot = 1; slot < 10; slot ++){
-
+					for(int slot = 1; slot < 10; slot ++)
 						if(getStackInSlot(slot) == null){
 							setInventorySlotContents(slot, st);
 							substractamt += st.stackSize;
 							reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt - substractamt);
 
-							setInventorySlotContents(11, reverse);
 						}
-					}
 				}
+
+				if(reverse.getTagCompound().getInteger(StackUtils.AMT) <= 0)
+					reverse = new ItemStack(Notes.note);
+
+				setInventorySlotContents(11, reverse);
 			}
 		}else{
 			setInventorySlotContents(10, null);

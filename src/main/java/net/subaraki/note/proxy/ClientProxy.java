@@ -8,7 +8,7 @@ public class ClientProxy extends ServerProxy {
 
 	public ClientProxy() {
 	}
-	
+
 	@Override
 	public void registerRendering() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNoteTable.class, new TileEntitySpecialRenderingNoteTable());

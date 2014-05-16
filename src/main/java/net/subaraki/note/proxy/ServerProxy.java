@@ -4,6 +4,6 @@ public class ServerProxy {
 
 	public ServerProxy() {
 	}
-	
+
 	public void registerRendering(){}
 }

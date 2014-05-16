@@ -43,9 +43,9 @@ public class StackUtils {
 
 	public boolean NBTAreEqual(NBTTagCompound tag1, NBTTagCompound tag2){
 
-		if(tag1.getInteger(AMT) == tag2.getInteger(AMT) && 
-				tag1.getInteger(DMG) == tag2.getInteger(DMG) && 
-				tag1.getShort(ITM) == tag2.getShort(ITM) &&
+		if((tag1.getInteger(AMT) == tag2.getInteger(AMT)) &&
+				(tag1.getInteger(DMG) == tag2.getInteger(DMG)) &&
+				(tag1.getShort(ITM) == tag2.getShort(ITM)) &&
 				tag1.getString(ID).equals(tag2.getString(ID)))
 			return true;
 
@@ -54,12 +54,12 @@ public class StackUtils {
 
 	public boolean itemEqualsNoteNBT(ItemStack stack, NBTTagCompound tag){
 
-		if(tag.getString(ID).equals(stack.getDisplayName()) && 
-				tag.getInteger(DMG) == stack.getItemDamage() && 
-				tag.getShort(ITM) == Item.getIdFromItem(stack.getItem()))
+		if(tag.getString(ID).equals(stack.getDisplayName()) &&
+				(tag.getInteger(DMG) == stack.getItemDamage()) &&
+				(tag.getShort(ITM) == Item.getIdFromItem(stack.getItem())))
 			return true;
-		
-		
+
+
 		return false;
 	}
 

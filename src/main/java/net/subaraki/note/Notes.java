@@ -31,7 +31,7 @@ public class Notes {
 	public static ServerProxy proxy;
 
 	public static Notes instance;
-	
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e){
 		instance = this;
@@ -70,7 +70,7 @@ public class Notes {
 		GameRegistry.addRecipe(new ItemStack(note), new Object[]{
 			"xxx","xpx","xxx", 'x', Items.paper, 'p' , Items.feather
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(table), new Object[]{"xnx","x x","x x", 'x', Blocks.planks, 'n', note});
 	}
 }

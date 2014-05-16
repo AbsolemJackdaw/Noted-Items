@@ -33,9 +33,8 @@ public class ItemNote extends Item {
 
 		if(par1ItemStack.stackSize > 1)
 			if(par1ItemStack.hasTagCompound())
-				if(par1ItemStack.getTagCompound().hasKey(StackUtils.ID)){
+				if(par1ItemStack.getTagCompound().hasKey(StackUtils.ID))
 					par1ItemStack.getItem().setMaxStackSize(1);
-				}
 	}
 
 	@Override
@@ -77,13 +76,12 @@ public class ItemNote extends Item {
 		IIcon icon = emptyIcon;
 
 		if(pass > 0){
-			if(b != null || i != null){
+			if((b != null) || (i != null))
 				if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
 					if(i != null)
 						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), pass -1);
 				}else
 					icon = blockicon;
-			}
 		}else
 			icon = super.getIcon(stack, 0);
 
@@ -107,7 +105,7 @@ public class ItemNote extends Item {
 		}
 
 		if(par1ItemStack.hasTagCompound())
-			par3List.add("Item Damaged ? " + 
+			par3List.add("Item Damaged ? " +
 					(par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG) > 0 ? "Yes," + " " +
 							par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG)
 							: "No"));
@@ -118,8 +116,7 @@ public class ItemNote extends Item {
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ) {
 
-		if(world.getBlock(x, y, z).equals(Blocks.anvil)){
-
+		if(world.getBlock(x, y, z).equals(Blocks.anvil))
 			if(stack.hasTagCompound()){
 				Item item = Item.getItemById(stack.getTagCompound().getShort(StackUtils.ITM));
 
@@ -127,7 +124,7 @@ public class ItemNote extends Item {
 
 				for(int i = 0; i < lenght; i ++){
 					ItemStack st = new ItemStack(item);
-					st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT) - 64*i;
+					st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT) - (64*i);
 					st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
 					EntityItem ei = new EntityItem(world, x, y, z, st);
 
@@ -138,7 +135,6 @@ public class ItemNote extends Item {
 				player.setCurrentItemOrArmor(0, new ItemStack(Notes.note));
 				return true;
 			}
-		}
 		return false;
 	}
 
