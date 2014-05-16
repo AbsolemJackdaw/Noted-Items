@@ -1,10 +1,12 @@
-package net.subaraki.note;
+package net.subaraki.note.event;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.subaraki.note.Notes;
+import net.subaraki.note.StackUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -59,7 +61,7 @@ public class AnvilEvent {
 
 								int amt = evt.left.getTagCompound().getInteger(StackUtils.AMT) + 
 										evt.right.getTagCompound().getInteger(StackUtils.AMT);
-								
+
 								tag.setInteger(StackUtils.AMT, amt);
 
 								noted.setTagCompound(tag);
