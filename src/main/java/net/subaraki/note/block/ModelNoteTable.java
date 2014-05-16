@@ -66,7 +66,9 @@ public class ModelNoteTable extends ModelBase
 	public void render(){
 		
 		float f5 = 0.0625f;
-		
+		Shape2.rotateAngleY = 1.58f;
+		Shape4.rotateAngleY = -1.58f;
+		Shape5.rotateAngleY = 1.58f *2f;
 		Shape1.render(f5);
 		Shape2.render(f5);
 		Shape3.render(f5);
