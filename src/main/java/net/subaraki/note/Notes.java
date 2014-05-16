@@ -1,9 +1,12 @@
 package net.subaraki.note;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.subaraki.note.block.NotingTable;
 import net.subaraki.note.block.TileEntityNoteTable;
 import net.subaraki.note.block.TileEntitySpecialRenderingNoteTable;
 import net.subaraki.note.event.AnvilEvent;
@@ -20,28 +23,49 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class Notes {
 
 	public static Item note;
+
+	public static Block table;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e){
-
-		note = new ItemNote().setUnlocalizedName("notedItem").setTextureName("map_empty").setCreativeTab(CreativeTabs.tabAllSearch);
-		GameRegistry.registerItem(note, "notedItem");
-		
-		GameRegistry.addRecipe(new ItemStack(note), new Object[]{
-			"xxx","xpx","xxx", 'x', Items.paper, 'p' , Items.feather
-		});
+		addItems();
+		addBlocks();
+		registerItems();
+		registerBlocks();
 	}
-	
+
 	@EventHandler
 	public void init(FMLInitializationEvent e){
 		new AnvilEvent();
 		GameRegistry.registerTileEntity(TileEntityNoteTable.class, "notingTable");
 		renderRegistry();
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void renderRegistry(){
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNoteTable.class, new TileEntitySpecialRenderingNoteTable());
 	}
+
 	
+	private void addItems(){
+		note = new ItemNote().setUnlocalizedName("notedItem").setTextureName("map_empty").setCreativeTab(CreativeTabs.tabAllSearch);
+	}
+
+	private void addBlocks(){
+		table = new NotingTable(Material.wood).setBlockName("notedTable").setBlockTextureName("planks_oak");
+	}
+
+	private void registerItems(){
+		GameRegistry.registerItem(note, "notedItem");
+	}
+
+	private void registerBlocks(){
+		GameRegistry.registerBlock(note, "");
+	}
+	
+	private void addRecipes(){
+		GameRegistry.addRecipe(new ItemStack(note), new Object[]{
+			"xxx","xpx","xxx", 'x', Items.paper, 'p' , Items.feather
+		});
+	}
 }
