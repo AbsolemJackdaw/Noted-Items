@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemNote extends Item {
 
 	private IIcon blockicon;
+	private IIcon emptyIcon;
 
 	//item stored
 	//number of items
@@ -42,10 +43,12 @@ public class ItemNote extends Item {
 		return true;
 	}
 
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
 		blockicon = par1IconRegister.registerIcon("noteditems:block");
+		emptyIcon = par1IconRegister.registerIcon("noteditems:block");
 		itemIcon = par1IconRegister.registerIcon("map_empty");
 	}
 
@@ -60,20 +63,26 @@ public class ItemNote extends Item {
 		}
 
 		IIcon icon = null;
-		if(b != null || i != null){
-			if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
-				if( i != null){
-					icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), pass);
-				}else
-					icon = super.getIcon(stack, 0);
+		
+		if(pass > 0){
+			if(b != null || i != null){
+				if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
+					if( i != null){
+						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), pass -1);
+					}else
+						icon = super.getIcon(stack, 0);
+				}else{
+					icon = blockicon;
+				}
 			}else{
-				icon = blockicon;
+				icon = super.getIcon(stack, 0);
 			}
 		}else{
 			icon = super.getIcon(stack, 0);
 		}
 
-		return pass == 0 ? super.getIcon(stack, 0) : icon;
+		System.out.println(pass + " "+ icon);
+		return icon == null && pass == 0 ? super.getIcon(stack, pass) : icon == null ? null : icon;
 	}
 
 	@Override
