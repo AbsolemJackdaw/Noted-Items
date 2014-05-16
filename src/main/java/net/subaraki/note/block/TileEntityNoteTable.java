@@ -14,36 +14,63 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 	@Override
 	public int getSizeInventory() {
-		
+
 		return 10;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int var1) {
-		
+
 		return slots[var1];
 	}
 
 	@Override
-	public ItemStack decrStackSize(int var1, int var2) {
-		
-		return null;
+	public ItemStack decrStackSize(int slot, int amt) {
+
+		if (this.slots[slot] != null)
+		{
+			ItemStack itemstack;
+
+			if (this.slots[slot].stackSize <= amt)
+			{
+				itemstack = this.slots[slot];
+				this.slots[slot] = null;
+				this.markDirty();
+				return itemstack;
+			}
+			else
+			{
+				itemstack = this.slots[slot].splitStack(amt);
+
+				if (this.slots[slot].stackSize == 0)
+				{
+					this.slots[slot] = null;
+				}
+
+				this.markDirty();
+				return itemstack;
+			}
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
-		
-		return null;
+
+		return slots[var1];
 	}
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		
+
 		slots[slot] = stack;
 
 		if ((stack != null) && (stack.stackSize > getInventoryStackLimit()))
 			stack.stackSize = getInventoryStackLimit();
-		
+
 	}
 
 	public void addInventorySlotContents(int slot, ItemStack stack) {
@@ -64,53 +91,57 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 			return;
 		}
 	}
-	
+
 	@Override
 	public String getInventoryName() {
-		
+
 		return null;
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		
+
 		return false;
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		
+
 		return 64;
 	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1) {
-		
+
 		return true;
 	}
 
 	@Override
 	public void openInventory() {
-		
-		
+
+
 	}
 
 	@Override
 	public void closeInventory() {
-		
-		
+
+
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public void updateEntity() {
 
-		
+
+
+	}
+	
+	public void craft(){
 		
 	}
 
