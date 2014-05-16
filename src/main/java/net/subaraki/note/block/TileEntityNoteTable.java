@@ -17,7 +17,7 @@ import net.subaraki.note.StackUtils;
 
 public class TileEntityNoteTable extends TileEntity implements IInventory {
 
-	ItemStack slots[] = new ItemStack[10];
+	ItemStack slots[] = new ItemStack[11];
 
 	private boolean hasResult;
 
@@ -39,6 +39,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
+
+		if(slot == 10){
+			for(int i = 0; i < 10; i ++){
+				slots[i] = null;
+			}
+			return slots[slot];
+		}
 
 		if (this.slots[slot] != null)
 		{
@@ -191,25 +198,28 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 								sample.getDisplayName(), 
 								sample.getItemDamage(),
 								(short) Item.getIdFromItem(sample.getItem()));
-						
+
 						if(note.hasTagCompound())
 							tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
-						
+
 						ItemStack noted = new ItemStack(Notes.note, 1,0);
 						noted.stackTagCompound = tag;
 
-						setInventorySlotContents(0, noted);
+						setInventorySlotContents(10, noted);
 						hasResult = true;
 					}else{
-						//setInventorySlotContents(0, note);
+						setInventorySlotContents(10, null);
 						hasResult = false;
 					}
 				}
 				else{
-					//setInventorySlotContents(0, note);
+					setInventorySlotContents(10, null);
 					hasResult = false;
 				}
 			}
+		}else{
+			setInventorySlotContents(10, null);
+			hasResult = false;
 		}
 	}
 }
