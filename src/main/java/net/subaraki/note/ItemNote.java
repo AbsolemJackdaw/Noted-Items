@@ -21,8 +21,6 @@ public class ItemNote extends Item {
 	private IIcon blockicon;
 	private IIcon emptyIcon;
 
-	//item stored
-	//number of items
 	public ItemNote() {
 		maxStackSize = 6;
 	}
@@ -48,7 +46,7 @@ public class ItemNote extends Item {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
 		blockicon = par1IconRegister.registerIcon("noteditems:block");
-		emptyIcon = par1IconRegister.registerIcon("noteditems:block");
+		emptyIcon = par1IconRegister.registerIcon("noteditems:empty");
 		itemIcon = par1IconRegister.registerIcon("map_empty");
 	}
 
@@ -62,27 +60,24 @@ public class ItemNote extends Item {
 			b = Block.getBlockById(stack.getTagCompound().getShort(StackUtils.ITM));
 		}
 
-		IIcon icon = null;
-		
+		IIcon icon = emptyIcon;
+
 		if(pass > 0){
 			if(b != null || i != null){
 				if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
-					if( i != null){
+					if(i != null)
 						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), pass -1);
-					}else
-						icon = super.getIcon(stack, 0);
-				}else{
+				}else
 					icon = blockicon;
-				}
-			}else{
-				icon = super.getIcon(stack, 0);
 			}
-		}else{
+		}else
 			icon = super.getIcon(stack, 0);
-		}
 
-		System.out.println(pass + " "+ icon);
-		return icon == null && pass == 0 ? super.getIcon(stack, pass) : icon == null ? null : icon;
+		if (icon == null)
+			icon = emptyIcon;
+
+
+		return icon;
 	}
 
 	@Override
@@ -129,6 +124,6 @@ public class ItemNote extends Item {
 
 	@Override
 	public int getRenderPasses(int metadata) {
-		return 3;
+		return 5;
 	}
 }
