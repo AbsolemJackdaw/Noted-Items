@@ -20,6 +20,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	private boolean hasResult;
 
 	public TileEntityNoteTable() {
+
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
 		craft();
-		
+
 		if(slot == 10){
 			for(int i = 0; i < 10; i ++){
 				slots[i] = null;
@@ -91,22 +92,22 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	}
 
 	public void addInventorySlotContents(int slot, ItemStack stack) {
-//
-//		if (slots[slot] == null) {
-//			setInventorySlotContents(slot, stack);
-//			return;
-//		}
-//
-//		if (slots[slot].stackSize + stack.stackSize <= 64) {
-//			slots[slot].stackSize += stack.stackSize;
-//			return;
-//		}
-//		else {
-//			int rest = slots[slot].stackSize + stack.stackSize - 64;
-//			stack.stackSize = rest;
-//			slots[slot].stackSize = 64;
-//			return;
-//		}
+		//
+		//		if (slots[slot] == null) {
+		//			setInventorySlotContents(slot, stack);
+		//			return;
+		//		}
+		//
+		//		if (slots[slot].stackSize + stack.stackSize <= 64) {
+		//			slots[slot].stackSize += stack.stackSize;
+		//			return;
+		//		}
+		//		else {
+		//			int rest = slots[slot].stackSize + stack.stackSize - 64;
+		//			stack.stackSize = rest;
+		//			slots[slot].stackSize = 64;
+		//			return;
+		//		}
 	}
 
 	@Override
@@ -154,6 +155,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	@Override
 	public void updateEntity() {
 
+		craft();
 	}
 
 	ArrayList<ItemStack> list = new ArrayList<ItemStack>();
@@ -237,18 +239,22 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 				int stackamt = reverse.getTagCompound().getInteger(StackUtils.AMT);
 				int lenght = (stackamt/64) + 1;
 
-				
+
 				for(int i = 0; i < lenght; i ++){
 					ItemStack st = new ItemStack(item);
-					st.stackSize = reverse.getTagCompound().getInteger(StackUtils.AMT) - 64*i;
+					st.stackSize = stackamt > 64 ? 64 : stackamt;
 					st.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
+
+					System.out.println(i + " "+ st.stackSize);
 					
-					if(i+1 < 10){
-						setInventorySlotContents(i+1, st);
-						reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt);
-						
-						setInventorySlotContents(11, reverse);
-					}
+//					if(i < 10 && i > 0){
+						if(getStackInSlot(i) == null){
+//							setInventorySlotContents(i, st);
+//							reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt-(64*i));
+//							
+//							setInventorySlotContents(11, reverse);
+						}
+//					}
 				}
 			}
 		}else{
