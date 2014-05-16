@@ -145,17 +145,18 @@ public class TileEntityNoteTable extends TileEntity implements IInventory {
 	public void craft(){
 		int amt = 0;
 
-		if(getStackInSlot(0) != null){
-			if(getStackInSlot(0).getItem() instanceof ItemNote){
-
-				for(int i = 1 ; i < 10 ; i ++){
-					if(getStackInSlot(i) != null){
-						amt += getStackInSlot(i).stackSize;
+		ItemStack note = getStackInSlot(0);
+		
+		if(note != null){
+			if(note.getItem() instanceof ItemNote){
+				
+				for(ItemStack stack : slots){
+					if(stack != null){
+						
 					}
 				}
 			}
 		}
-
 	}
 
 }
