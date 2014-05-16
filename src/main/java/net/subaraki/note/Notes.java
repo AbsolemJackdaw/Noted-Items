@@ -7,9 +7,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.subaraki.note.block.NotingTable;
-import net.subaraki.note.block.TileEntityNoteTable;
-import net.subaraki.note.event.AnvilEvent;
+import net.subaraki.note.block.BlockNotingTable;
+import net.subaraki.note.block.inventory.TileEntityNoteTable;
 import net.subaraki.note.proxy.ServerProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -44,10 +43,12 @@ public class Notes {
 
 	@EventHandler
 	public void init(FMLInitializationEvent e){
-		new AnvilEvent();
+
 		GameRegistry.registerTileEntity(TileEntityNoteTable.class, "notingTable");
-		proxy.registerRendering();
+		
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+		
+		proxy.registerRendering();
 	}
 
 	private void addItems(){
@@ -55,7 +56,7 @@ public class Notes {
 	}
 
 	private void addBlocks(){
-		table = new NotingTable(Material.wood).setBlockName("notedTable").setBlockTextureName("planks_oak");
+		table = new BlockNotingTable(Material.wood).setBlockName("notedTable").setBlockTextureName("planks_oak");
 	}
 
 	private void registerItems(){

@@ -1,12 +1,12 @@
-package net.subaraki.note.block;
+package net.subaraki.note.block.inventory;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotResult extends Slot {
+public class SlotNoteResult extends Slot {
 
-	public SlotResult(IInventory par1iInventory, int par2, int par3, int par4) {
+	public SlotNoteResult(IInventory par1iInventory, int par2, int par3, int par4) {
 		super(par1iInventory, par2, par3, par4);
 	}
 

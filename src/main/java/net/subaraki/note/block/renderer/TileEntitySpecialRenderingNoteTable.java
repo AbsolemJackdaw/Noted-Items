@@ -1,4 +1,4 @@
-package net.subaraki.note.block;
+package net.subaraki.note.block.renderer;
 
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
@@ -7,14 +7,15 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.subaraki.note.block.model.ModelNotingTable;
 
 public class TileEntitySpecialRenderingNoteTable extends
 TileEntitySpecialRenderer {
 
-	private static ModelNoteTable table;
+	private static ModelNotingTable table;
 	private static final ResourceLocation texture = new ResourceLocation("noteditems","model/table.png");
 	public TileEntitySpecialRenderingNoteTable() {
-		table = new ModelNoteTable();
+		table = new ModelNotingTable();
 	}
 
 	@Override

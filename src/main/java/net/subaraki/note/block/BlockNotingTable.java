@@ -7,11 +7,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.subaraki.note.Notes;
+import net.subaraki.note.block.inventory.TileEntityNoteTable;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-public class NotingTable extends Block{
+public class BlockNotingTable extends Block{
 
-	public NotingTable(Material mat) {
+	public BlockNotingTable(Material mat) {
 		super(mat);
 		setCreativeTab(CreativeTabs.tabAllSearch);
 	}
@@ -21,7 +22,6 @@ public class NotingTable extends Block{
 			int y, int z, EntityPlayer player,
 			int p_149727_6_, float p_149727_7_, float p_149727_8_,
 			float p_149727_9_) {
-
 
 		player.openGui(Notes.instance, 0, world, x, y, z);
 

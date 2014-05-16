@@ -1,10 +1,10 @@
-package net.subaraki.note.block;
+package net.subaraki.note.block.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelNoteTable extends ModelBase
+public class ModelNotingTable extends ModelBase
 {
 	ModelRenderer Shape1;
 	ModelRenderer Shape2;
@@ -12,7 +12,7 @@ public class ModelNoteTable extends ModelBase
 	ModelRenderer Shape4;
 	ModelRenderer Shape5;
 
-	public ModelNoteTable()
+	public ModelNotingTable()
 	{
 		textureWidth = 64;
 		textureHeight = 32;

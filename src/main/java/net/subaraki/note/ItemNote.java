@@ -112,33 +112,6 @@ public class ItemNote extends Item {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player,
-			World world, int x, int y, int z, int side, float hitX, float hitY,
-			float hitZ) {
-
-		if(world.getBlock(x, y, z).equals(Blocks.anvil))
-			if(stack.hasTagCompound()){
-				Item item = Item.getItemById(stack.getTagCompound().getShort(StackUtils.ITM));
-
-				int lenght = (stack.getTagCompound().getInteger(StackUtils.AMT)/64) + 1;
-
-				for(int i = 0; i < lenght; i ++){
-					ItemStack st = new ItemStack(item);
-					st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT) - (64*i);
-					st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
-					EntityItem ei = new EntityItem(world, x, y, z, st);
-
-					if(!world.isRemote)
-						world.spawnEntityInWorld(ei);
-				}
-
-				player.setCurrentItemOrArmor(0, new ItemStack(Notes.note));
-				return true;
-			}
-		return false;
-	}
-
-	@Override
 	public int getRenderPasses(int metadata) {
 		return 5;
 	}

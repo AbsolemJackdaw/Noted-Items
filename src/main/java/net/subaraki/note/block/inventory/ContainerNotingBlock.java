@@ -1,4 +1,4 @@
-package net.subaraki.note.block;
+package net.subaraki.note.block.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -6,16 +6,16 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class NoteContainer extends Container {
+public class ContainerNotingBlock extends Container {
 
-	public NoteContainer(TileEntityNoteTable te, EntityPlayer player) {
+	public ContainerNotingBlock(TileEntityNoteTable te, EntityPlayer player) {
 
 		InventoryPlayer inv = player.inventory;
 
-		this.addSlotToContainer(new NoteSlot(te, 0, 32, 16));
+		this.addSlotToContainer(new SlotNote(te, 0, 32, 16));
 
-		this.addSlotToContainer(new SlotResult(te, 10, 144, 32));
-		this.addSlotToContainer(new NoteSlot(te, 11, 32, 48));
+		this.addSlotToContainer(new SlotNoteResult(te, 10, 144, 32));
+		this.addSlotToContainer(new SlotNote(te, 11, 32, 48));
 
 		for (int l = 0; l < 3; ++l)
 			for (int i1 = 0; i1 < 3; ++i1)

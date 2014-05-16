@@ -1,4 +1,4 @@
-package net.subaraki.note.block;
+package net.subaraki.note.block.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
