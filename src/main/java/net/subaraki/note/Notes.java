@@ -8,16 +8,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.subaraki.note.block.NotingTable;
 import net.subaraki.note.block.TileEntityNoteTable;
-import net.subaraki.note.block.TileEntitySpecialRenderingNoteTable;
 import net.subaraki.note.event.AnvilEvent;
-import cpw.mods.fml.client.registry.ClientRegistry;
+import net.subaraki.note.proxy.ServerProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 
 @Mod(modid = "noteditems", name = "Noted Items", version = "ModJamBeta")
 public class Notes {
@@ -25,7 +24,10 @@ public class Notes {
 	public static Item note;
 
 	public static Block table;
-	
+
+	@SidedProxy(clientSide = "net.subaraki.note.proxy.ClientProxy", serverSide = "net.subaraki.note.proxy.ServerProxy")
+	public static ServerProxy proxy;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e){
 		addItems();
@@ -38,15 +40,9 @@ public class Notes {
 	public void init(FMLInitializationEvent e){
 		new AnvilEvent();
 		GameRegistry.registerTileEntity(TileEntityNoteTable.class, "notingTable");
-		renderRegistry();
+		proxy.registerRendering();
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void renderRegistry(){
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNoteTable.class, new TileEntitySpecialRenderingNoteTable());
-	}
-
-	
 	private void addItems(){
 		note = new ItemNote().setUnlocalizedName("notedItem").setTextureName("map_empty").setCreativeTab(CreativeTabs.tabAllSearch);
 	}
@@ -60,9 +56,9 @@ public class Notes {
 	}
 
 	private void registerBlocks(){
-		GameRegistry.registerBlock(note, "");
+		GameRegistry.registerBlock(table, "notingTable");
 	}
-	
+
 	private void addRecipes(){
 		GameRegistry.addRecipe(new ItemStack(note), new Object[]{
 			"xxx","xpx","xxx", 'x', Items.paper, 'p' , Items.feather
