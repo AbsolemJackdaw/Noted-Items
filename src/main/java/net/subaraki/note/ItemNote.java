@@ -45,7 +45,7 @@ public class ItemNote extends Item {
 
 		if(par1ItemStack.hasTagCompound())
 			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
-		
+
 		return s.length() > 0 ?  I18n.format("noted.item") + " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
 	}
 
@@ -124,17 +124,17 @@ public class ItemNote extends Item {
 				Item item = Item.getItemById(stack.getTagCompound().getShort(StackUtils.ITM));
 
 				int lenght = (stack.getTagCompound().getInteger(StackUtils.AMT)/64) + 1;
-				
+
 				for(int i = 0; i < lenght; i ++){
 					ItemStack st = new ItemStack(item);
 					st.stackSize = stack.getTagCompound().getInteger(StackUtils.AMT) - 64*i;
 					st.setItemDamage(stack.getTagCompound().getInteger(StackUtils.DMG));
 					EntityItem ei = new EntityItem(world, x, y, z, st);
-					
+
 					if(!world.isRemote)
 						world.spawnEntityInWorld(ei);
 				}
-				
+
 				player.setCurrentItemOrArmor(0, new ItemStack(Notes.note));
 				return true;
 			}

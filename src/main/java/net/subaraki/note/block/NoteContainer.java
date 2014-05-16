@@ -16,13 +16,11 @@ public class NoteContainer extends Container {
 		this.addSlotToContainer(new NoteSlot(te, 0, 32, 16));
 		
 		this.addSlotToContainer(new SlotResult(te, 10, 144, 32));
-		this.addSlotToContainer(new SlotResult(te, 11, 32, 48));
+		this.addSlotToContainer(new NoteSlot(te, 11, 32, 48));
 
 		for (int l = 0; l < 3; ++l)
 			for (int i1 = 0; i1 < 3; ++i1)
 				this.addSlotToContainer(new Slot(te, 1 +  i1 + l * 3, 78 + i1 * 18, 16 + l * 18));
-		
-		
 
 		for (int i = 0; i < 3; i++) 
 			for (int k = 0; k < 9; k++)
