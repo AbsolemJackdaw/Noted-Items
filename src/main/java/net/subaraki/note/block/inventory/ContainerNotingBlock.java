@@ -4,10 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
+import net.subaraki.note.item.ItemNote;
 
 public class ContainerNotingBlock extends Container {
 
@@ -25,6 +24,7 @@ public class ContainerNotingBlock extends Container {
 
 		this.addSlotToContainer(new SlotNoteResult(te, 10, 144, 32));
 		this.addSlotToContainer(new SlotNote(te, 11, 32, 48));
+		this.addSlotToContainer(new SlotNote(te, 12, 6, 16));
 
 		for (int l = 0; l < 3; ++l)
 			for (int i1 = 0; i1 < 3; ++i1)
@@ -49,36 +49,55 @@ public class ContainerNotingBlock extends Container {
 		ItemStack itemstack = null;
 		Slot slot = (Slot)this.inventorySlots.get(par2);
 
-		//0 = input 1
-		//2 = input 2
-		//1 = output
-		// 3 - 11 = inputs
-		// 12 - 47 = vanilla 39-47hotbar
+		System.out.println(par2);
+		int input = 0;
+		int output = 1;
+		int exchange = 2;
+		int ink = 3;
+		
+		int inputsMax = 12;
+		int inputsMin = 4;
+		
+		int vanillaMax = 48;
+		int vanillaMin = 13;
+		
+		int vanillaHotBarStart = 40;
 
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if (par2 == 1)
+			if (par2 == ink || par2 == input)
 			{
-				if (!this.mergeItemStack(itemstack1, 12, 47, true))
-				{
+				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true))
 					return null;
-				}
-
 				slot.onSlotChange(itemstack1, itemstack);
 			}
-			else if (par2 >= 12 && par2 <= 47)
+			
+			if (par2 >= vanillaMin && par2 <= vanillaMax)
 			{
-				if (!this.mergeItemStack(itemstack1, 3, 12, false))
+				System.out.println(itemstack.getItemDamage());
+				if(itemstack.getItem() instanceof ItemDye && itemstack.getItemDamage() == 0){
+					if (!this.mergeItemStack(itemstack1, ink, ink+1, false))
+					{
+						return null;
+					}
+				}
+				else if(itemstack.getItem() instanceof ItemNote){
+					if (!this.mergeItemStack(itemstack1, input, input+1, false))
+					{
+						return null;
+					}
+				}
+				else if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false))
 				{
 					return null;
 				}
 			}
-			else if (par2 >= 3 && par2 <= 11)
+			else if (par2 >= inputsMin && par2 <= inputsMax)
 			{
-				if (!this.mergeItemStack(itemstack1, 12, 48, false))
+				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax +1, false))
 				{
 					return null;
 				}

@@ -17,11 +17,11 @@ import net.subaraki.note.item.ItemNote;
 
 public class TileEntityNoteTable extends TileEntity implements IInventory{
 
-	ItemStack slots[] = new ItemStack[12];
+	ItemStack slots[] = new ItemStack[13];
 
 	@Override
 	public int getSizeInventory() {
-		return 12;
+		return 13;
 	}
 
 	@Override
@@ -120,12 +120,14 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		craft();
 	}
 
+	/**checks for need items and places the resulting note in the result stack*/
 	public void craft(){
 		int amt = 0;
 
 		ItemStack note = getStackInSlot(0);
 		ItemStack reverse = getStackInSlot(11);
 
+		//writing items to the note
 		if((note != null) && (note.stackSize == 1) && (reverse == null)){
 			if(note.getItem() instanceof ItemNote){
 
@@ -183,34 +185,47 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					setInventorySlotContents(10, null);
 				}
 			}
-		}else if ((reverse != null) && (note == null) && (reverse.stackSize == 1)){
+		}
+
+		//getting items from the noted item
+		else if ((reverse != null) && (note == null) && (reverse.stackSize == 1)){
 			if(reverse.hasTagCompound()){
 
-				Item item = Item.getItemById(reverse.getTagCompound().getShort(StackUtils.ITM));
-				int stackamt = reverse.getTagCompound().getInteger(StackUtils.AMT);
+				Item containedItem = Item.getItemById(reverse.getTagCompound().getShort(StackUtils.ITM));
 
-				ItemStack stub = new ItemStack(item);
-				int max = stub.getMaxStackSize();
+				int storedItemsTotal = reverse.getTagCompound().getInteger(StackUtils.AMT);
 
-				int lenght = (stackamt/max)+1;
+				ItemStack stub = new ItemStack(containedItem);
+				int maxStackSize = stub.getMaxStackSize();
 
-				int substractamt = 0;
+				int storedStacksAMT = (storedItemsTotal/maxStackSize)+1;
 
+				int stacksizeToSubstract = 0;
+
+				//iterate over all slots
 				for(int slot = 1; slot < 10; slot++ ){
-					int index = slot-1;
+					//check ALL slots for 1 stack. if the first encountered stack is empty,
+					//the stack will be set to that slot and break out of this loop, then runs the same code for 
+					//the next slot.
+					//this allows for a new stack to be set to any empty stack, not the stack corresponding to it's slot
+					for(int runStacks = 1; runStacks < 10; runStacks ++){
+						int stackIndex = slot-1;
 
-					ItemStack st = new ItemStack(item);
-					st.stackSize = Math.min(max, stackamt- (index*max));
+						ItemStack newStack = new ItemStack(containedItem);
+						newStack.stackSize = Math.min(maxStackSize, storedItemsTotal- (stackIndex*maxStackSize));
 
-					st.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
+						newStack.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
 
-					if(st.stackSize <= 0)
-						st = null;
+						if(newStack.stackSize <= 0)
+							newStack = null;
 
-					if(getStackInSlot(slot) == null && st != null){
-						setInventorySlotContents(slot, st);
-						substractamt += st.stackSize;
-						reverse.getTagCompound().setInteger(StackUtils.AMT, stackamt - substractamt);
+						if(getStackInSlot(runStacks) == null && newStack != null){
+
+							setInventorySlotContents(runStacks, newStack);
+							stacksizeToSubstract += newStack.stackSize;
+							reverse.getTagCompound().setInteger(StackUtils.AMT, storedItemsTotal - stacksizeToSubstract);
+							break;
+						}
 					}
 				}
 
