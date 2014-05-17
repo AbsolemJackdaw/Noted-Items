@@ -24,7 +24,7 @@ public class ContainerNotingBlock extends Container {
 
 		this.addSlotToContainer(new SlotNoteResult(te, 10, 144, 32));
 		this.addSlotToContainer(new SlotNote(te, 11, 32, 48));
-		this.addSlotToContainer(new SlotNote(te, 12, 6, 16));
+		this.addSlotToContainer(new SlotInk(te, 12, 6, 16));
 
 		for (int l = 0; l < 3; ++l)
 			for (int i1 = 0; i1 < 3; ++i1)

@@ -13,7 +13,7 @@ public class SlotInk extends Slot{
 	
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack) {
-		return par1ItemStack.getItem() instanceof ItemDye && par1ItemStack.getItemDamage() == 0;
+		return (par1ItemStack.getItem() instanceof ItemDye && par1ItemStack.getItemDamage() == 0);
 	}
 
 

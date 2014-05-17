@@ -33,8 +33,20 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 	public ItemStack decrStackSize(int slot, int amt) {
 		markDirty();
 		if(slot == 10){
-			for(int i = 0; i < 10; i ++)
+			ItemStack ink = slots[12];
+			int allStacks = 0;
+			for(int i = 0; i < 10; i ++){
+				
+				if( i > 0 && slots[i] != null)
+					allStacks += 1;
+					
 				slots[i] = null;
+			}
+			ink.stackSize -= allStacks;
+			if(ink.stackSize <= 0)
+				ink = null;
+			
+			slots[12] = ink;
 			return slots[slot];
 		}
 
@@ -126,9 +138,10 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 		ItemStack note = getStackInSlot(0);
 		ItemStack reverse = getStackInSlot(11);
+		ItemStack ink = getStackInSlot(12);
 
 		//writing items to the note
-		if((note != null) && (note.stackSize == 1) && (reverse == null)){
+		if((note != null) && (note.stackSize == 1) && (reverse == null) && ink != null){
 			if(note.getItem() instanceof ItemNote){
 
 				ItemStack sample = null;
@@ -143,6 +156,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 				if(sample != null){
 
 					NBTTagCompound notedItemTag = new NBTTagCompound();
+					int numberOfStacks = 0;
 
 					for(int i = 1; i < 10; i++)
 						if(getStackInSlot(i) != null){
@@ -151,6 +165,8 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 								break;
 							}
 
+							numberOfStacks += 1;
+							
 							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage())
 								if((getStackInSlot(i).getItem() instanceof ItemNote) && getStackInSlot(i).hasTagCompound()){
 									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
@@ -158,6 +174,12 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 								}else
 									amount += getStackInSlot(i).stackSize;
 						}
+
+					
+					if(numberOfStacks > ink.stackSize){
+						setInventorySlotContents(10, null);
+						return;
+					}
 
 					if(sample != null){
 						NBTTagCompound tag = new StackUtils().createNotedNbt(
@@ -177,8 +199,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						noted.stackTagCompound = tag;
 
 						setInventorySlotContents(10, noted);
-					}else{
-						setInventorySlotContents(10, null);
 					}
 				}
 				else{
