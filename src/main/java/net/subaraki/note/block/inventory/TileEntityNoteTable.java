@@ -153,8 +153,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 				if(sample != null){
 
+					if(sample.hasTagCompound() && !(sample.getItem() instanceof ItemNote)){
+						setInventorySlotContents(10, null);
+						return;
+					}
+
 					NBTTagCompound notedItemTag = new NBTTagCompound();
-					
+
 					//the number of stacks currently in the 3x3 grid. can be maximum 9. used for referring the need of ink
 					int numberOfStacks = 0;
 
@@ -162,6 +167,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						if(getStackInSlot(i) != null){
 							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
 								sample = null;
+								setInventorySlotContents(10, null);
 								break;
 							}
 
