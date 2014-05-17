@@ -12,8 +12,9 @@ import net.subaraki.note.block.model.ModelNotingTable;
 public class TileEntitySpecialRenderingNoteTable extends
 TileEntitySpecialRenderer {
 
-	private static ModelNotingTable table;
+	private ModelNotingTable table;
 	private static final ResourceLocation texture = new ResourceLocation("noteditems","model/table.png");
+
 	public TileEntitySpecialRenderingNoteTable() {
 		table = new ModelNotingTable();
 	}

@@ -30,7 +30,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
+
 		markDirty();
+
 		if(slot == 10){
 			ItemStack ink = slots[12];
 			int allStacks = 0;
@@ -127,7 +129,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	@Override
 	public void updateEntity() {
-		markDirty();
 		craft();
 	}
 
@@ -173,7 +174,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					//the number of stacks currently in the 3x3 grid. can be maximum 9. used for referring the need of ink
 					int numberOfStacks = 0;
 
-					for(int i = 1; i < 10; i++){
+					for(int i = 1; i < 10; i++)
 						if(getStackInSlot(i) != null){
 
 							//if the sample (first stack found) does not match another itemstack in the 3x3 grid, break out of the loop,
@@ -201,7 +202,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 								}else
 									newStacksize += getStackInSlot(i).stackSize;
 						}
-					}//for loop stops here
 
 					//if the player did not provide enough ink, you can't write notes
 					if(numberOfStacks > ink.stackSize){
@@ -213,7 +213,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					if(sample != null){
 
 						//if the contained item in the note, if any, is not the same as the sample,  dont make a note.
-						if(note.hasTagCompound() && itemInNote != null && !sample.getItem().equals(itemInNote)){
+						if(note.hasTagCompound() && (itemInNote != null) && !sample.getItem().equals(itemInNote)){
 							setInventorySlotContents(10, null);
 							return;
 						}
@@ -239,11 +239,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						noted.stackTagCompound = tag;
 
 						setInventorySlotContents(10, noted);
+						markDirty();
 					}else
 						setInventorySlotContents(10, null);
 				} else
 					setInventorySlotContents(10, null);
 			}
+			markDirty();
 		}
 
 		//getting items from the noted item
@@ -289,9 +291,11 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					reverse = new ItemStack(Notes.note);
 
 				setInventorySlotContents(11, reverse);
+				markDirty();
 			}
 		} else
 			setInventorySlotContents(10, null);
+
 	}
 
 	@Override

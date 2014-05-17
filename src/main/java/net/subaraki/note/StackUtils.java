@@ -18,7 +18,12 @@ public class StackUtils {
 	public StackUtils(){
 	}
 
-	/**creates a new nbt tag with all requiered tags for a noted item*/
+	/**creates a new nbt tag with all requiered tags for a noted item
+	 * @param amt stacksize
+	 * @param name display name of the stack
+	 * @param damage the damage of the item, meta or inflicted damage
+	 * @param itemid the of the item stored
+	 * */
 	public NBTTagCompound createNotedNbt(int amt, String name, int damage, short itemid){
 		NBTTagCompound tag = new NBTTagCompound();
 
@@ -30,8 +35,19 @@ public class StackUtils {
 		return tag;
 	}
 
+	/**merges two tag compounds.
+	 * if the tagcompound is null, a new will be given
+	 * if either one of both is null, the other one will be returned
+	 * if both are not null, the amt, id, itm and dmg will be merged into a new nbt
+	 * 
+	 * no checks are made to check if the compound actually has one of the tags amt, id, itm or dmg
+	 * */
 	public NBTTagCompound fuseNbt(NBTTagCompound tag1, NBTTagCompound tag2) {
 		NBTTagCompound tag = new NBTTagCompound();
+
+		if((tag1 == null) && (tag2 == null))
+			return tag;
+
 		if((tag1 == null) || tag1.hasNoTags())
 			return tag2;
 
@@ -46,6 +62,9 @@ public class StackUtils {
 		return tag;
 	}
 
+	/**checks if the returning keys from both stacks are the same
+	 * checks for damage, contained item, and display name
+	 * */
 	public boolean NBTAreEqual(NBTTagCompound tag1, NBTTagCompound tag2){
 
 		if(tag1 == null)
@@ -61,13 +80,13 @@ public class StackUtils {
 		return false;
 	}
 
+	/**checks of the stack matches the damage, displayname and item id stored in the tag*/
 	public boolean itemEqualsNoteNBT(ItemStack stack, NBTTagCompound tag){
 
 		if(tag.getString(ID).equals(stack.getDisplayName()) &&
 				(tag.getInteger(DMG) == stack.getItemDamage()) &&
 				(tag.getShort(ITM) == Item.getIdFromItem(stack.getItem())))
 			return true;
-
 
 		return false;
 	}

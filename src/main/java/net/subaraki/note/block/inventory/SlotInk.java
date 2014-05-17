@@ -15,6 +15,4 @@ public class SlotInk extends Slot{
 	public boolean isItemValid(ItemStack par1ItemStack) {
 		return ((par1ItemStack.getItem() instanceof ItemDye) && (par1ItemStack.getItemDamage() == 0));
 	}
-
-
 }

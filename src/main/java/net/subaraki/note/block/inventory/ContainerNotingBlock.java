@@ -65,20 +65,16 @@ public class ContainerNotingBlock extends Container {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if ((par2 == ink) || (par2 == input))
-			{
+			if ((par2 == ink) || (par2 == input) || (par2 == exchange)){
 				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true))
 					return null;
 				slot.onSlotChange(itemstack1, itemstack);
 			}
 
 			if(par2 == result){
-
 				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true))
 					return null;
-
 				slot.decrStackSize(1);
-
 			}
 
 			if ((par2 >= vanillaMin) && (par2 <= vanillaMax))

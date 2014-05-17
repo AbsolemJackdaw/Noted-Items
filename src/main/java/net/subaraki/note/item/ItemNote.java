@@ -87,7 +87,6 @@ public class ItemNote extends Item {
 		if (icon == null)
 			icon = emptyIcon;
 
-
 		return icon;
 	}
 
