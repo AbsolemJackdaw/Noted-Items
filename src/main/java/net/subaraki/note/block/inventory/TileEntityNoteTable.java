@@ -168,7 +168,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						setInventorySlotContents(10, null);
 						return;
 					}
-
+					
 					NBTTagCompound notedItemTag = new NBTTagCompound();
 
 					//the number of stacks currently in the 3x3 grid. can be maximum 9. used for referring the need of ink
@@ -177,6 +177,11 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					for(int i = 1; i < 10; i++)
 						if(getStackInSlot(i) != null){
 
+							if(getStackInSlot(i).hasTagCompound()&& !(sample.getItem() instanceof ItemNote)){
+								sample = null;
+								setInventorySlotContents(10, null);
+								return;
+							}
 							//if the sample (first stack found) does not match another itemstack in the 3x3 grid, break out of the loop,
 							//setting the result to null
 							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
@@ -184,7 +189,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 								setInventorySlotContents(10, null);
 								break;
 							}
-
+							
 							numberOfStacks += 1;
 
 							//if the items have the same damage (we dont want to merge itemdyes...)
