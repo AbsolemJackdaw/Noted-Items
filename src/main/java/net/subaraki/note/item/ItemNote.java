@@ -97,7 +97,10 @@ public class ItemNote extends Item {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 
 		if(par1ItemStack.hasTagCompound()){
-			ItemStack s = new ItemStack(Item.getItemById(par1ItemStack.stackTagCompound.getInteger(StackUtils.ITM)));
+			short id = par1ItemStack.stackTagCompound.getShort(StackUtils.ITM);
+			int dmg = par1ItemStack.stackTagCompound.getShort(StackUtils.DMG);
+			ItemStack s = new ItemStack(Item.getItemById(id),1, dmg);
+			
 			par3List.add(StatCollector.translateToLocal("itemnote.noteworth") + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT) +" "+ s.getDisplayName()
 					);
 		}
