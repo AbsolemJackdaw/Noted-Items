@@ -102,15 +102,15 @@ public class ItemNote extends Item {
 
 		if(par1ItemStack.hasTagCompound()){
 			ItemStack s = new ItemStack(Item.getItemById(par1ItemStack.stackTagCompound.getInteger(StackUtils.ITM)));
-			par3List.add("Note worth : " + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT) +" "+ s.getDisplayName()
+			par3List.add(StatCollector.translateToLocal("itemnote.noteworth") + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT) +" "+ s.getDisplayName()
 					);
 		}
 
 		if(par1ItemStack.hasTagCompound())
-			par3List.add("Item Damaged ? " +
-					(par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG) > 0 ? "Yes," + " " +
+			par3List.add(StatCollector.translateToLocal("itemnote.damaged") +
+					(par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG) > 0 ? StatCollector.translateToLocal("itemnote.yes")+"," + " " +
 							par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG)
-							: "No"));
+							: StatCollector.translateToLocal("itemnote.no")));
 	}
 
 	@Override

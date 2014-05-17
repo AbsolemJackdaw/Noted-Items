@@ -2,3 +2,7 @@ item.notedItem.name=Item Noté
 tile.notedTable.name=Table à Noté
 
 noted.item=Note de
+itemnote.damaged=Item Endommagé ?
+itemnote.yes=Oui
+itemnote.no=Non
+itemnote.noteworth=Note Contiens :
