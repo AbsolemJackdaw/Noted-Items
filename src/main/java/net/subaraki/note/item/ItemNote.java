@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.subaraki.note.StackUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -46,7 +47,7 @@ public class ItemNote extends Item {
 		if(par1ItemStack.hasTagCompound())
 			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
 
-		return s.length() > 0 ?  I18n.format("noted.item") + " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
+		return s.length() > 0 ?  StatCollector.translateToLocal("noted.item") + " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
 	}
 
 	@Override
