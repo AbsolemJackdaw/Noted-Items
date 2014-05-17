@@ -1,7 +1,6 @@
 package net.subaraki.note.block.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,16 +35,16 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 			ItemStack ink = slots[12];
 			int allStacks = 0;
 			for(int i = 0; i < 10; i ++){
-				
-				if( i > 0 && slots[i] != null)
+
+				if( (i > 0) && (slots[i] != null))
 					allStacks += 1;
-					
+
 				slots[i] = null;
 			}
 			ink.stackSize -= allStacks;
 			if(ink.stackSize <= 0)
 				ink = null;
-			
+
 			slots[12] = ink;
 			return slots[slot];
 		}
@@ -134,14 +133,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	/**checks for need items and places the resulting note in the result stack*/
 	public void craft(){
-		int amt = 0;
 
 		ItemStack note = getStackInSlot(0);
 		ItemStack reverse = getStackInSlot(11);
 		ItemStack ink = getStackInSlot(12);
 
 		//writing items to the note
-		if((note != null) && (note.stackSize == 1) && (reverse == null) && ink != null){
+		if((note != null) && (note.stackSize == 1) && (reverse == null) && (ink != null)){
 			if(note.getItem() instanceof ItemNote){
 
 				ItemStack sample = null;
@@ -166,7 +164,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 							}
 
 							numberOfStacks += 1;
-							
+
 							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage())
 								if((getStackInSlot(i).getItem() instanceof ItemNote) && getStackInSlot(i).hasTagCompound()){
 									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
@@ -175,7 +173,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 									amount += getStackInSlot(i).stackSize;
 						}
 
-					
 					if(numberOfStacks > ink.stackSize){
 						setInventorySlotContents(10, null);
 						return;
@@ -191,19 +188,16 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						if(note.hasTagCompound())
 							tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
 
-						if(note.hasTagCompound() && sample.hasTagCompound() && sample.getItem() instanceof ItemNote){
+						if(note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
 							tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
-						}
 
 						ItemStack noted = new ItemStack(Notes.note, 1,0);
 						noted.stackTagCompound = tag;
 
 						setInventorySlotContents(10, noted);
 					}
-				}
-				else{
+				} else
 					setInventorySlotContents(10, null);
-				}
 			}
 		}
 
@@ -218,14 +212,12 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 				ItemStack stub = new ItemStack(containedItem);
 				int maxStackSize = stub.getMaxStackSize();
 
-				int storedStacksAMT = (storedItemsTotal/maxStackSize)+1;
-
 				int stacksizeToSubstract = 0;
 
 				//iterate over all slots
-				for(int slot = 1; slot < 10; slot++ ){
+				for(int slot = 1; slot < 10; slot++ )
 					//check ALL slots for 1 stack. if the first encountered stack is empty,
-					//the stack will be set to that slot and break out of this loop, then runs the same code for 
+					//the stack will be set to that slot and break out of this loop, then runs the same code for
 					//the next slot.
 					//this allows for a new stack to be set to any empty stack, not the stack corresponding to it's slot
 					for(int runStacks = 1; runStacks < 10; runStacks ++){
@@ -239,7 +231,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						if(newStack.stackSize <= 0)
 							newStack = null;
 
-						if(getStackInSlot(runStacks) == null && newStack != null){
+						if((getStackInSlot(runStacks) == null) && (newStack != null)){
 
 							setInventorySlotContents(runStacks, newStack);
 							stacksizeToSubstract += newStack.stackSize;
@@ -247,16 +239,14 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 							break;
 						}
 					}
-				}
 
 				if(reverse.getTagCompound().getInteger(StackUtils.AMT) <= 0)
 					reverse = new ItemStack(Notes.note);
 
 				setInventorySlotContents(11, reverse);
 			}
-		}else{
+		} else
 			setInventorySlotContents(10, null);
-		}
 	}
 
 	@Override
@@ -302,7 +292,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.func_148857_g()); 
+		this.readFromNBT(pkt.func_148857_g());
 	}
 
 

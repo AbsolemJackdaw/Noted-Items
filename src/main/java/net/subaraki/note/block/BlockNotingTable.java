@@ -32,19 +32,17 @@ public class BlockNotingTable extends Block{
 	@Override
 	public void breakBlock(World world, int x, int y,
 			int z, Block block, int meta) {
-		
+
 		TileEntityNoteTable te = (TileEntityNoteTable) world.getTileEntity(x, y, z);
 
-		for(int i = 0; i < te.getSizeInventory(); i ++){
-			if(i != 10){
+		for(int i = 0; i < te.getSizeInventory(); i ++)
+			if(i != 10)
 				if(te.getStackInSlot(i)!=null){
 					EntityItem ei = new EntityItem(world, x, y, z, te.getStackInSlot(i));
 					if(!world.isRemote)
 						world.spawnEntityInWorld(ei);
 				}
-			}
-		}
-		
+
 		world.removeTileEntity(x, y, z);
 	}
 

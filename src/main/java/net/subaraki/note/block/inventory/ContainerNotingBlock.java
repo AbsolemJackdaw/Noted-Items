@@ -51,71 +51,51 @@ public class ContainerNotingBlock extends Container {
 
 		System.out.println(par2);
 		int input = 0;
-		int output = 1;
-		int exchange = 2;
 		int ink = 3;
-		
+
 		int inputsMax = 12;
 		int inputsMin = 4;
-		
+
 		int vanillaMax = 48;
 		int vanillaMin = 13;
-		
-		int vanillaHotBarStart = 40;
 
-		if (slot != null && slot.getHasStack())
+		if ((slot != null) && slot.getHasStack())
 		{
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if (par2 == ink || par2 == input)
+			if ((par2 == ink) || (par2 == input))
 			{
 				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true))
 					return null;
 				slot.onSlotChange(itemstack1, itemstack);
 			}
-			
-			if (par2 >= vanillaMin && par2 <= vanillaMax)
+
+			if ((par2 >= vanillaMin) && (par2 <= vanillaMax))
 			{
 				System.out.println(itemstack.getItemDamage());
-				if(itemstack.getItem() instanceof ItemDye && itemstack.getItemDamage() == 0){
+				if((itemstack.getItem() instanceof ItemDye) && (itemstack.getItemDamage() == 0)){
 					if (!this.mergeItemStack(itemstack1, ink, ink+1, false))
-					{
 						return null;
-					}
 				}
 				else if(itemstack.getItem() instanceof ItemNote){
 					if (!this.mergeItemStack(itemstack1, input, input+1, false))
-					{
 						return null;
-					}
 				}
 				else if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false))
-				{
 					return null;
-				}
 			}
-			else if (par2 >= inputsMin && par2 <= inputsMax)
-			{
+			else if ((par2 >= inputsMin) && (par2 <= inputsMax))
 				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax +1, false))
-				{
 					return null;
-				}
-			}
 
 			if (itemstack1.stackSize == 0)
-			{
 				slot.putStack((ItemStack)null);
-			}
 			else
-			{
 				slot.onSlotChanged();
-			}
 
 			if (itemstack1.stackSize == itemstack.stackSize)
-			{
 				return null;
-			}
 
 			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
 
@@ -125,24 +105,19 @@ public class ContainerNotingBlock extends Container {
 
 	}
 
+	@Override
 	public void onContainerClosed(EntityPlayer par1EntityPlayer)
 	{
 		super.onContainerClosed(par1EntityPlayer);
 
 		if (!this.p.worldObj.isRemote)
-		{
 			for (int i = 0; i < 12; ++i)
-			{
 				if( i != 10){
 					ItemStack itemstack = this.te.getStackInSlotOnClosing(i);
 
 					if (itemstack != null)
-					{
 						par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
-					}
 				}
-			}
-		}
 		te.markDirty();
 	}
 

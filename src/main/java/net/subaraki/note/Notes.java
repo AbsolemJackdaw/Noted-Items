@@ -46,9 +46,9 @@ public class Notes {
 	public void init(FMLInitializationEvent e){
 
 		GameRegistry.registerTileEntity(TileEntityNoteTable.class, "notingTable");
-		
+
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-		
+
 		proxy.registerRendering();
 	}
 

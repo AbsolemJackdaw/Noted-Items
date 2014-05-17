@@ -6,9 +6,7 @@ import net.subaraki.note.Notes;
 import net.subaraki.note.block.inventory.TileEntityNoteTable;
 import net.subaraki.note.block.renderer.TileEntitySpecialRenderingNoteTable;
 import net.subaraki.note.item.renderer.RenderNotingBlock;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends ServerProxy {
 
