@@ -5,6 +5,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerNotingBlock extends Container {
 
@@ -33,16 +35,72 @@ public class ContainerNotingBlock extends Container {
 	public boolean canInteractWith(EntityPlayer var1) {
 		return true;
 	}
-	
-	
+
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
-		return null;
+		ItemStack itemstack = null;
+		Slot slot = (Slot)this.inventorySlots.get(par2);
+
+		//0 = input 1
+		//2 = input 2
+		//1 = output
+		// 3 - 11 = inputs
+		// 12 - 47 = vanilla 39-47hotbar
+
+		if (slot != null && slot.getHasStack())
+		{
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+
+			if (par2 == 1)
+			{
+				if (!this.mergeItemStack(itemstack1, 12, 47, true))
+				{
+					return null;
+				}
+
+				slot.onSlotChange(itemstack1, itemstack);
+			}
+			else if (par2 >= 12 && par2 <= 47)
+			{
+				if (!this.mergeItemStack(itemstack1, 3, 12, false))
+				{
+					return null;
+				}
+			}
+			else if (par2 >= 3 && par2 <= 11)
+			{
+				if (!this.mergeItemStack(itemstack1, 12, 48, false))
+				{
+					return null;
+				}
+			}
+
+			if (itemstack1.stackSize == 0)
+			{
+				slot.putStack((ItemStack)null);
+			}
+			else
+			{
+				slot.onSlotChanged();
+			}
+
+			if (itemstack1.stackSize == itemstack.stackSize)
+			{
+				return null;
+			}
+
+			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+
+		}
+
+		return itemstack;
+
 	}
-	
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 	}
-	
+
 }

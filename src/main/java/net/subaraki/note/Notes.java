@@ -57,7 +57,7 @@ public class Notes {
 	}
 
 	private void addBlocks(){
-		table = new BlockNotingTable(Material.wood).setBlockName("notedTable").setBlockTextureName("planks_oak");
+		table = new BlockNotingTable(Material.wood).setBlockName("notedTable").setBlockTextureName("planks_oak").setHardness(2.0f).setLightOpacity(0);
 	}
 
 	private void registerItems(){
