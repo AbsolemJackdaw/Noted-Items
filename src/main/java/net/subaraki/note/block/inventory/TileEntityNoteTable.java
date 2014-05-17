@@ -142,17 +142,27 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		if((note != null) && (note.stackSize == 1) && (reverse == null) && (ink != null)){
 			if(note.getItem() instanceof ItemNote){
 
+				Item itemInNote = null;
+
+				if(note.hasTagCompound())
+					itemInNote = Item.getItemById(note.getTagCompound().getShort(StackUtils.ITM));
+
 				ItemStack sample = null;
+
+				//setting a sample that will be compared to all other items in the slot
+				//the sample is the first stack encountered.
 				for(int i = 1; i < 10; i++)
 					if(getStackInSlot(i) != null){
 						sample = getStackInSlot(i);
 						break;
 					}
 
-				int amount = 0;
+				//the size that will be set to nbt, accounted all stack sizes from item stacks in the 3x3 grid
+				int newStacksize = 0;
 
 				if(sample != null){
-
+					//if the sample has an nbt (enchanted items, etc...), dont make a recipe
+					//unless the sample is an item note. this allows for fusing notes
 					if(sample.hasTagCompound() && !(sample.getItem() instanceof ItemNote)){
 						setInventorySlotContents(10, null);
 						return;
@@ -163,8 +173,11 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					//the number of stacks currently in the 3x3 grid. can be maximum 9. used for referring the need of ink
 					int numberOfStacks = 0;
 
-					for(int i = 1; i < 10; i++)
+					for(int i = 1; i < 10; i++){
 						if(getStackInSlot(i) != null){
+
+							//if the sample (first stack found) does not match another itemstack in the 3x3 grid, break out of the loop,
+							//setting the result to null
 							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
 								sample = null;
 								setInventorySlotContents(10, null);
@@ -173,8 +186,11 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 							numberOfStacks += 1;
 
+							//if the items have the same damage (we dont want to merge itemdyes...)
 							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage())
+
 								if((getStackInSlot(i).getItem() instanceof ItemNote)){
+
 									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
 										notedItemTag = new StackUtils().fuseNbt(notedItemTag, getStackInSlot(i).getTagCompound());
 									else{
@@ -183,36 +199,48 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 									}
 
 								}else
-									amount += getStackInSlot(i).stackSize;
+									newStacksize += getStackInSlot(i).stackSize;
 						}
+					}//for loop stops here
 
+					//if the player did not provide enough ink, you can't write notes
 					if(numberOfStacks > ink.stackSize){
 						setInventorySlotContents(10, null);
 						return;
 					}
 
+					//sample might have been previously set to null
 					if(sample != null){
+
+						//if the contained item in the note, if any, is not the same as the sample,  dont make a note.
+						if(note.hasTagCompound() && itemInNote != null && !sample.getItem().equals(itemInNote)){
+							setInventorySlotContents(10, null);
+							return;
+						}
+
 						NBTTagCompound tag = new StackUtils().createNotedNbt(
-								amount,
+								newStacksize,
 								sample.getDisplayName(),
 								sample.getItemDamage(),
 								(short) Item.getIdFromItem(sample.getItem()));
 
-						if(note.hasTagCompound())
-							tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
-
-						if(note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
-							tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
-
 						if(!note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
 							tag = notedItemTag;
+
+						if(note.hasTagCompound()){
+							tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
+
+							if(sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
+								tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
+						}
 
 
 						ItemStack noted = new ItemStack(Notes.note, 1,0);
 						noted.stackTagCompound = tag;
 
 						setInventorySlotContents(10, noted);
-					}
+					}else
+						setInventorySlotContents(10, null);
 				} else
 					setInventorySlotContents(10, null);
 			}
@@ -306,11 +334,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 
-
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.func_148857_g());
 	}
-
 
 }
