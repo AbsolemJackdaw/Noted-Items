@@ -154,6 +154,8 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 				if(sample != null){
 
 					NBTTagCompound notedItemTag = new NBTTagCompound();
+					
+					//the number of stacks currently in the 3x3 grid. can be maximum 9. used for referring the need of ink
 					int numberOfStacks = 0;
 
 					for(int i = 1; i < 10; i++)
@@ -166,9 +168,14 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 							numberOfStacks += 1;
 
 							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage())
-								if((getStackInSlot(i).getItem() instanceof ItemNote) && getStackInSlot(i).hasTagCompound()){
+								if((getStackInSlot(i).getItem() instanceof ItemNote)){
 									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
 										notedItemTag = new StackUtils().fuseNbt(notedItemTag, getStackInSlot(i).getTagCompound());
+									else{
+										setInventorySlotContents(10, null);
+										return;
+									}
+
 								}else
 									amount += getStackInSlot(i).stackSize;
 						}
@@ -190,6 +197,10 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 						if(note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
 							tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
+
+						if(!note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
+							tag = notedItemTag;
+
 
 						ItemStack noted = new ItemStack(Notes.note, 1,0);
 						noted.stackTagCompound = tag;

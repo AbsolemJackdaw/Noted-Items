@@ -49,8 +49,9 @@ public class ContainerNotingBlock extends Container {
 		ItemStack itemstack = null;
 		Slot slot = (Slot)this.inventorySlots.get(par2);
 
-		System.out.println(par2);
 		int input = 0;
+		int result = 1;
+		int exchange = 2;
 		int ink = 3;
 
 		int inputsMax = 12;
@@ -71,16 +72,29 @@ public class ContainerNotingBlock extends Container {
 				slot.onSlotChange(itemstack1, itemstack);
 			}
 
+			if(par2 == result){
+
+				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true))
+					return null;
+
+				slot.decrStackSize(1);
+
+			}
+
 			if ((par2 >= vanillaMin) && (par2 <= vanillaMax))
 			{
-				System.out.println(itemstack.getItemDamage());
 				if((itemstack.getItem() instanceof ItemDye) && (itemstack.getItemDamage() == 0)){
 					if (!this.mergeItemStack(itemstack1, ink, ink+1, false))
 						return null;
 				}
 				else if(itemstack.getItem() instanceof ItemNote){
-					if (!this.mergeItemStack(itemstack1, input, input+1, false))
-						return null;
+					if(!((Slot)inventorySlots.get(input)).getHasStack()){
+						if (!this.mergeItemStack(itemstack1, input, input+1, false))
+							return null;
+					}
+					else
+						if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false))
+							return null;
 				}
 				else if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false))
 					return null;

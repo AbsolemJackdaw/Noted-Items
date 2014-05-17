@@ -22,7 +22,7 @@ public class ItemNote extends Item {
 	private IIcon emptyIcon;
 
 	public ItemNote() {
-		maxStackSize = 16;
+		maxStackSize = 1;
 	}
 
 	@Override
