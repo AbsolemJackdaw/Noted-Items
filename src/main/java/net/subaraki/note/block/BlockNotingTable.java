@@ -3,6 +3,7 @@ package net.subaraki.note.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -26,6 +27,22 @@ public class BlockNotingTable extends Block{
 		player.openGui(Notes.instance, 0, world, x, y, z);
 
 		return true;
+	}
+
+	@Override
+	public void breakBlock(World world, int x, int y,
+			int z, Block block, int meta) {
+		TileEntityNoteTable te = (TileEntityNoteTable) world.getTileEntity(x, y, z);
+
+		for(int i = 0; i < te.getSizeInventory(); i ++){
+			if(i != 11){
+				if(te.getStackInSlot(i)!=null){
+					EntityItem ei = new EntityItem(world, x, y, z, te.getStackInSlot(i));
+					if(!world.isRemote)
+						world.spawnEntityInWorld(ei);
+				}
+			}
+		}
 	}
 
 	@Override
