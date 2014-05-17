@@ -3,6 +3,7 @@ package net.subaraki.note;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.subaraki.note.item.ItemNote;
 
 public class StackUtils {
 
@@ -68,7 +69,7 @@ public class StackUtils {
 	/**checks if the returning keys from both stacks are the same
 	 * checks for damage, contained item, and display name
 	 * */
-	public boolean NBTAreEqual(NBTTagCompound tag1, NBTTagCompound tag2){
+	public boolean areNBTEqual(NBTTagCompound tag1, NBTTagCompound tag2){
 
 		if(tag1 == null) {
 			return false;
@@ -87,12 +88,29 @@ public class StackUtils {
 	}
 
 	/**checks of the stack matches the damage, displayname and item id stored in the tag*/
-	public boolean itemEqualsNoteNBT(ItemStack stack, NBTTagCompound tag){
+	public boolean canItemBeNoted(ItemStack stack, NBTTagCompound tag){
 
 		if(tag.getString(ID).equals(stack.getDisplayName()) &&
 				(tag.getInteger(DMG) == stack.getItemDamage()) &&
 				(tag.getShort(ITM) == Item.getIdFromItem(stack.getItem()))) {
 			return true;
+		}
+
+		return false;
+	}
+
+
+	public boolean doesStackEqualSample(ItemStack stackInSlot, ItemStack sample){
+
+		if(stackInSlot == null|| sample == null)
+			return false;
+
+		if(stackInSlot.getItem() == sample.getItem()){
+			if(stackInSlot.getItemDamage() == sample.getItemDamage()){
+				if(stackInSlot.getDisplayName().equals(sample.getDisplayName())){
+					return true;
+				}
+			}
 		}
 
 		return false;

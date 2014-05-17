@@ -31,7 +31,13 @@ public class GuiNotingBlock extends GuiContainer {
 
 		mc.renderEngine.bindTexture(BG);
 		drawTexturedModalRect(j, k, 0, 0, 176, 166);
+		
+		if(te.getStackInSlot(0) != null && te.getStackInSlot(12) != null && te .getStackInSlot(11) == null){
+			drawTexturedModalRect(j + 56, k + 22, 32, 176, 84, 40);
 
+		}else if (te.getStackInSlot(11) != null && te .getStackInSlot(0) == null){
+			drawTexturedModalRect(j + 56 , k + 50, 16, 176, 16, 16);
+		}
 	}
 
 

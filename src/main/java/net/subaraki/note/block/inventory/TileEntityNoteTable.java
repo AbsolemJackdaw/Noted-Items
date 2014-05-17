@@ -148,73 +148,105 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		if((note != null) && (note.stackSize == 1) && (reverse == null) && (ink != null)){
 			if(note.getItem() instanceof ItemNote){
 
-				Item itemInNote = null;
-
-				if(note.hasTagCompound()) {
-					itemInNote = Item.getItemById(note.getTagCompound().getShort(StackUtils.ITM));
-				}
-
 				ItemStack sample = null;
-
-				//setting a sample that will be compared to all other items in the slot
-				//the sample is the first stack encountered.
-				for(int i = 1; i < 10; i++) {
-					if(getStackInSlot(i) != null){
-						sample = getStackInSlot(i);
+				for(int slot = 1 ; slot < 10; slot ++){
+					if(getStackInSlot(slot) != null){
+						sample = getStackInSlot(slot);
 						break;
 					}
 				}
 
-				//the size that will be set to nbt, accounted all stack sizes from item stacks in the 3x3 grid
-				int newStacksize = 0;
-
 				if(sample != null){
-					//if the sample has an nbt (enchanted items, etc...), dont make a recipe
-					//unless the sample is an item note. this allows for fusing notes
-					if(sample.hasTagCompound() && !(sample.getItem() instanceof ItemNote)){
-						setInventorySlotContents(10, null);
-						return;
-					}
 
-					NBTTagCompound notedItemTag = new NBTTagCompound();
+					//used to set the nbt amount in the note
+					int totalStackAmount = 0;
 
-					//the number of stacks currently in the 3x3 grid. can be maximum 9. used for referring the need of ink
+					//used for consuming ink
 					int numberOfStacks = 0;
 
-					for(int i = 1; i < 10; i++) {
-						if(getStackInSlot(i) != null){
+					NBTTagCompound stubNbt = new NBTTagCompound();
 
-							if(getStackInSlot(i).hasTagCompound()&& !(sample.getItem() instanceof ItemNote)){
-								sample = null;
-								setInventorySlotContents(10, null);
-								return;
-							}
-							//if the sample (first stack found) does not match another itemstack in the 3x3 grid, break out of the loop,
-							//setting the result to null
-							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
-								setInventorySlotContents(10, null);
-								return;
-							}
+					for(int slot = 1; slot < 10; slot++){
 
-							numberOfStacks += 1;
+						if(getStackInSlot(slot) != null){
 
-							//if the items have the same damage (we dont want to merge itemdyes...)
-							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage()) {
-								if((getStackInSlot(i).getItem() instanceof ItemNote)){
+							//if all other stacks equal the sample stack, continue
+							if(new StackUtils().doesStackEqualSample(getStackInSlot(slot), sample)){
+								totalStackAmount += getStackInSlot(slot).stackSize;
 
-									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound())) {
-										notedItemTag = new StackUtils().fuseNbt(notedItemTag, getStackInSlot(i).getTagCompound());
-									} else{
+								//feathers, normal swords, tools, cobblestone, ...
+								if(!getStackInSlot(slot).hasTagCompound()){
+
+									//if note already contains items
+									if(note.hasTagCompound()){
+
+										stubNbt = note.getTagCompound();
+
+										if(new StackUtils().canItemBeNoted(sample, note.getTagCompound())){
+											NBTTagCompound tag = new NBTTagCompound();
+											tag = new StackUtils().createNotedNbt(totalStackAmount,
+													sample.getDisplayName(), sample.getItemDamage(), 
+													(short)Item.getIdFromItem(sample.getItem()));
+
+											stubNbt = new StackUtils().fuseNbt(stubNbt, tag);
+										}else{
+											setInventorySlotContents(10, null);
+											return;
+										}
+
+									}else{
+										//if the note is empty
+
+										if(stubNbt.hasNoTags())
+											stubNbt =  new StackUtils().createNotedNbt(totalStackAmount, 
+													sample.getDisplayName(), sample.getItemDamage(), 
+													(short)Item.getIdFromItem(sample.getItem()));
+										else{
+											NBTTagCompound tag =  new StackUtils().createNotedNbt(totalStackAmount, 
+													sample.getDisplayName(), sample.getItemDamage(), 
+													(short)Item.getIdFromItem(sample.getItem()));
+											stubNbt = new StackUtils().fuseNbt(stubNbt, tag);
+										}
+									}
+								}
+								//if the grid stack has a tag compound
+								else{
+									if((getStackInSlot(slot).getItem() instanceof ItemNote)){
+
+										//if note already contains items
+										if(note.hasTagCompound()){
+
+											stubNbt = note.getTagCompound();
+
+											if(new StackUtils().areNBTEqual(stubNbt, getStackInSlot(slot).getTagCompound())){
+												stubNbt = new StackUtils().fuseNbt(stubNbt, getStackInSlot(slot).getTagCompound());
+											}else{
+												setInventorySlotContents(10, null);
+												return;
+											}
+
+										}else{
+											//if the note is empty
+
+											//writing a noted item to an empty note is stupid...
+											setInventorySlotContents(10, null);
+											return;
+										}
+
+									}else{
 										setInventorySlotContents(10, null);
 										return;
 									}
-
-								} else {
-									newStacksize += getStackInSlot(i).stackSize;
 								}
+
+							}else{
+								setInventorySlotContents(10, null);
+								return;
 							}
+
+							numberOfStacks +=1;
 						}
-					}
+					}//end of for loop
 
 					//if the player did not provide enough ink, you can't write notes
 					if(numberOfStacks > ink.stackSize){
@@ -222,55 +254,16 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						return;
 					}
 
-					//if the containedItem is the same as not the same as the one in the second note, dont make a new note
-					if(note.hasTagCompound()){
-						if((itemInNote != null)){
-							if(sample.hasTagCompound()){
-								if(!(Item.getIdFromItem(itemInNote) == sample.getTagCompound().getShort(StackUtils.ITM))){
-									setInventorySlotContents(10, null);
-									return;
-								}
-								else
-									if(!(Item.getIdFromItem(itemInNote) == Item.getIdFromItem(sample.getItem()))){
-										setInventorySlotContents(10, null);
-										return;
-									}
-							}
-						}
-					}
-
-					NBTTagCompound tag = new StackUtils().createNotedNbt(
-							newStacksize,
-							sample.getDisplayName(),
-							sample.getItemDamage(),
-							(short) Item.getIdFromItem(sample.getItem()));
-
-					if(!note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote)) {
-						tag = notedItemTag;
-					}
-
-					if(note.hasTagCompound()) {
-						tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
-					}
-
-
-					if(note.hasTagCompound()) {
-						if(sample.hasTagCompound() && (sample.getItem() instanceof ItemNote)) {
-							tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
-						}
-					}
-
-
 					ItemStack noted = new ItemStack(Notes.note, 1,0);
-					noted.stackTagCompound = tag;
+					noted.stackTagCompound = stubNbt;
 
 					setInventorySlotContents(10, noted);
-					markDirty();
-				} else {
+
+				}else{
 					setInventorySlotContents(10, null);
+					return;
 				}
 			}
-			markDirty();
 		}
 
 		//getting items from the noted item
