@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 public class GuiHandler implements IGuiHandler {
 
 	public GuiHandler() {
+	
 	}
 
 	@Override
