@@ -18,8 +18,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemNote extends Item {
 
-	private IIcon blockicon;
-	private IIcon emptyIcon;
+	protected IIcon blockicon;
+	protected IIcon emptyIcon;
 
 	public ItemNote() {
 		maxStackSize = 1;
@@ -37,6 +37,26 @@ public class ItemNote extends Item {
 				}
 			}
 		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
+
+		int color = 0xffffff;
+
+		if(par2 > 0){
+			if(par1ItemStack.hasTagCompound()){
+				short i = par1ItemStack.getTagCompound().getShort(StackUtils.ITM);
+				Item it = Item.getItemById(i);
+				int dmg = par1ItemStack.getTagCompound().getInteger(StackUtils.DMG);
+				ItemStack stack = new ItemStack(it,1, dmg);
+
+				color = stack.getItem().getColorFromItemStack(par1ItemStack, par2-1);
+			}
+		}
+
+		return par2 == 0 ? super.getColorFromItemStack(par1ItemStack, par2) : color;
 	}
 
 	@Override
