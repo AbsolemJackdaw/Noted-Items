@@ -57,7 +57,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
+	public void setInventorySlotContents(int slot, ItemStack stack){
 
 		slots[slot] = stack;
 
@@ -133,13 +133,8 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 				if(sample != null){
 
-					if(note.hasTagCompound())
-						if(!(sample.getItem() instanceof ItemNote))
-							if(! new StackUtils().itemEqualsNoteNBT(sample, note.stackTagCompound)){
-								setInventorySlotContents(10, null);
-								return;
-							}
-
+					NBTTagCompound notedItemTag = new NBTTagCompound();
+					
 					for(int i = 1; i < 10; i++)
 						if(getStackInSlot(i) != null){
 							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
@@ -150,7 +145,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage())
 								if((getStackInSlot(i).getItem() instanceof ItemNote) && getStackInSlot(i).hasTagCompound()){
 									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
-										amount += getStackInSlot(i).getTagCompound().getInteger(StackUtils.AMT);
+										notedItemTag = new StackUtils().fuseNbt(notedItemTag, getStackInSlot(i).getTagCompound());
 								}else
 									amount += getStackInSlot(i).stackSize;
 						}
@@ -165,6 +160,10 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						if(note.hasTagCompound())
 							tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
 
+						if(note.hasTagCompound() && sample.hasTagCompound() && sample.getItem() instanceof ItemNote){
+							tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
+						}
+						
 						ItemStack noted = new ItemStack(Notes.note, 1,0);
 						noted.stackTagCompound = tag;
 
@@ -189,15 +188,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 				int lenght = (stackamt/max)+1;
 
 				int substractamt = 0;
-
-
-
-				//size of all stacks included 32
-				//size of a stack 64
-				//size of all slots = 9
-				//size of total stacks = 1
-				//run code for all stacks
-				//get size from allstacks
 
 				for(int slot = 1; slot < 10; slot++ ){
 					int index = slot-1;
