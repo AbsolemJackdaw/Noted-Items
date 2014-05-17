@@ -203,14 +203,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 										return;
 									}
 
-									//if the containedItem is the same as not the same as the one in the second note, dont make a new note
-									if(note.hasTagCompound() && sample.hasTagCompound())
-										if((itemInNote != null))
-											if(!(Item.getIdFromItem(itemInNote) == sample.getTagCompound().getShort(StackUtils.ITM))){
-												setInventorySlotContents(10, null);
-												return;
-											}
-
 								}else
 									newStacksize += getStackInSlot(i).stackSize;
 						}
@@ -220,6 +212,21 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						setInventorySlotContents(10, null);
 						return;
 					}
+
+					//if the containedItem is the same as not the same as the one in the second note, dont make a new note
+					if(note.hasTagCompound())
+						if((itemInNote != null))
+							if(sample.hasTagCompound()){
+								if(!(Item.getIdFromItem(itemInNote) == sample.getTagCompound().getShort(StackUtils.ITM))){
+									setInventorySlotContents(10, null);
+									return;
+								}
+							}
+							else
+								if(!(Item.getIdFromItem(itemInNote) == Item.getIdFromItem(sample.getItem()))){
+									setInventorySlotContents(10, null);
+									return;
+								}
 
 					NBTTagCompound tag = new StackUtils().createNotedNbt(
 							newStacksize,
