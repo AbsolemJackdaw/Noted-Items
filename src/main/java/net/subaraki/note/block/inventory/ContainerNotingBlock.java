@@ -6,11 +6,18 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerNotingBlock extends Container {
 
+	EntityPlayer p;
+	TileEntityNoteTable te;
+
 	public ContainerNotingBlock(TileEntityNoteTable te, EntityPlayer player) {
+
+		p = player;
+		this.te = te;
 
 		InventoryPlayer inv = player.inventory;
 
@@ -98,6 +105,28 @@ public class ContainerNotingBlock extends Container {
 		return itemstack;
 
 	}
+
+	public void onContainerClosed(EntityPlayer par1EntityPlayer)
+	{
+		super.onContainerClosed(par1EntityPlayer);
+
+		if (!this.p.worldObj.isRemote)
+		{
+			for (int i = 0; i < 12; ++i)
+			{
+				if( i != 10){
+					ItemStack itemstack = this.te.getStackInSlotOnClosing(i);
+
+					if (itemstack != null)
+					{
+						par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
+					}
+				}
+			}
+		}
+		te.markDirty();
+	}
+
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();

@@ -52,8 +52,15 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return slots[var1];
+	public ItemStack getStackInSlotOnClosing(int slot) {
+		if (this.slots[slot] != null){
+
+			ItemStack itemstack = this.slots[slot];
+			this.slots[slot] = null;
+			return itemstack;
+		}
+		else
+			return null;
 	}
 
 	@Override
@@ -134,7 +141,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 				if(sample != null){
 
 					NBTTagCompound notedItemTag = new NBTTagCompound();
-					
+
 					for(int i = 1; i < 10; i++)
 						if(getStackInSlot(i) != null){
 							if(!getStackInSlot(i).getItem().equals(sample.getItem())){
@@ -163,7 +170,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						if(note.hasTagCompound() && sample.hasTagCompound() && sample.getItem() instanceof ItemNote){
 							tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
 						}
-						
+
 						ItemStack noted = new ItemStack(Notes.note, 1,0);
 						noted.stackTagCompound = tag;
 
@@ -193,13 +200,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					int index = slot-1;
 
 					ItemStack st = new ItemStack(item);
-					st.stackSize = Math.min(64, stackamt- (index*64));
+					st.stackSize = Math.min(max, stackamt- (index*max));
 
 					st.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
-					
+
 					if(st.stackSize <= 0)
 						st = null;
-					
+
 					if(getStackInSlot(slot) == null && st != null){
 						setInventorySlotContents(slot, st);
 						substractamt += st.stackSize;
@@ -257,10 +264,11 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 
+
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.func_148857_g()); 
 	}
-	
-	
+
+
 }
