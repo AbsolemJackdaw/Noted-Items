@@ -38,14 +38,16 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 			int allStacks = 0;
 			for(int i = 0; i < 10; i ++){
 
-				if( (i > 0) && (slots[i] != null))
+				if( (i > 0) && (slots[i] != null)) {
 					allStacks += 1;
+				}
 
 				slots[i] = null;
 			}
 			ink.stackSize -= allStacks;
-			if(ink.stackSize <= 0)
+			if(ink.stackSize <= 0) {
 				ink = null;
+			}
 
 			slots[12] = ink;
 			return slots[slot];
@@ -53,14 +55,16 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 		ItemStack stack = getStackInSlot(slot);
 
-		if (stack != null)
-			if (stack.stackSize <= amt)
+		if (stack != null) {
+			if (stack.stackSize <= amt) {
 				setInventorySlotContents(slot, null);
-			else {
+			} else {
 				stack = stack.splitStack(amt);
-				if (stack.stackSize == 0)
+				if (stack.stackSize == 0) {
 					setInventorySlotContents(slot, null);
+				}
 			}
+		}
 		return stack;
 	}
 
@@ -71,9 +75,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 			ItemStack itemstack = this.slots[slot];
 			this.slots[slot] = null;
 			return itemstack;
-		}
-		else
+		} else {
 			return null;
+		}
 	}
 
 	@Override
@@ -81,8 +85,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 		slots[slot] = stack;
 
-		if ((stack != null) && (stack.stackSize > getInventoryStackLimit()))
+		if ((stack != null) && (stack.stackSize > getInventoryStackLimit())) {
 			stack.stackSize = getInventoryStackLimit();
+		}
 		markDirty();
 	}
 
@@ -145,18 +150,20 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 				Item itemInNote = null;
 
-				if(note.hasTagCompound())
+				if(note.hasTagCompound()) {
 					itemInNote = Item.getItemById(note.getTagCompound().getShort(StackUtils.ITM));
+				}
 
 				ItemStack sample = null;
 
 				//setting a sample that will be compared to all other items in the slot
 				//the sample is the first stack encountered.
-				for(int i = 1; i < 10; i++)
+				for(int i = 1; i < 10; i++) {
 					if(getStackInSlot(i) != null){
 						sample = getStackInSlot(i);
 						break;
 					}
+				}
 
 				//the size that will be set to nbt, accounted all stack sizes from item stacks in the 3x3 grid
 				int newStacksize = 0;
@@ -174,7 +181,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					//the number of stacks currently in the 3x3 grid. can be maximum 9. used for referring the need of ink
 					int numberOfStacks = 0;
 
-					for(int i = 1; i < 10; i++)
+					for(int i = 1; i < 10; i++) {
 						if(getStackInSlot(i) != null){
 
 							if(getStackInSlot(i).hasTagCompound()&& !(sample.getItem() instanceof ItemNote)){
@@ -192,20 +199,22 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 							numberOfStacks += 1;
 
 							//if the items have the same damage (we dont want to merge itemdyes...)
-							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage())
-
+							if(getStackInSlot(i).getItemDamage() == sample.getItemDamage()) {
 								if((getStackInSlot(i).getItem() instanceof ItemNote)){
 
-									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound()))
+									if(new StackUtils().NBTAreEqual(sample.stackTagCompound, getStackInSlot(i).getTagCompound())) {
 										notedItemTag = new StackUtils().fuseNbt(notedItemTag, getStackInSlot(i).getTagCompound());
-									else{
+									} else{
 										setInventorySlotContents(10, null);
 										return;
 									}
 
-								}else
+								} else {
 									newStacksize += getStackInSlot(i).stackSize;
+								}
+							}
 						}
+					}
 
 					//if the player did not provide enough ink, you can't write notes
 					if(numberOfStacks > ink.stackSize){
@@ -214,19 +223,21 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					}
 
 					//if the containedItem is the same as not the same as the one in the second note, dont make a new note
-					if(note.hasTagCompound())
-						if((itemInNote != null))
+					if(note.hasTagCompound()){
+						if((itemInNote != null)){
 							if(sample.hasTagCompound()){
 								if(!(Item.getIdFromItem(itemInNote) == sample.getTagCompound().getShort(StackUtils.ITM))){
 									setInventorySlotContents(10, null);
 									return;
 								}
+								else
+									if(!(Item.getIdFromItem(itemInNote) == Item.getIdFromItem(sample.getItem()))){
+										setInventorySlotContents(10, null);
+										return;
+									}
 							}
-							else
-								if(!(Item.getIdFromItem(itemInNote) == Item.getIdFromItem(sample.getItem()))){
-									setInventorySlotContents(10, null);
-									return;
-								}
+						}
+					}
 
 					NBTTagCompound tag = new StackUtils().createNotedNbt(
 							newStacksize,
@@ -234,16 +245,20 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 							sample.getItemDamage(),
 							(short) Item.getIdFromItem(sample.getItem()));
 
-					if(!note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
+					if(!note.hasTagCompound() && sample.hasTagCompound() && (sample.getItem() instanceof ItemNote)) {
 						tag = notedItemTag;
+					}
 
-					if(note.hasTagCompound())
+					if(note.hasTagCompound()) {
 						tag = new StackUtils().fuseNbt(note.getTagCompound(), tag);
+					}
 
 
-					if(note.hasTagCompound())
-						if(sample.hasTagCompound() && (sample.getItem() instanceof ItemNote))
+					if(note.hasTagCompound()) {
+						if(sample.hasTagCompound() && (sample.getItem() instanceof ItemNote)) {
 							tag = new StackUtils().fuseNbt(note.getTagCompound(), notedItemTag);
+						}
+					}
 
 
 					ItemStack noted = new ItemStack(Notes.note, 1,0);
@@ -251,8 +266,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 					setInventorySlotContents(10, noted);
 					markDirty();
-				} else
+				} else {
 					setInventorySlotContents(10, null);
+				}
 			}
 			markDirty();
 		}
@@ -271,7 +287,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 				int stacksizeToSubstract = 0;
 
 				//iterate over all slots
-				for(int slot = 1; slot < 10; slot++ )
+				for(int slot = 1; slot < 10; slot++ ) {
 					//check ALL slots for 1 stack. if the first encountered stack is empty,
 					//the stack will be set to that slot and break out of this loop, then runs the same code for
 					//the next slot.
@@ -284,8 +300,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 						newStack.setItemDamage(reverse.getTagCompound().getInteger(StackUtils.DMG));
 
-						if(newStack.stackSize <= 0)
+						if(newStack.stackSize <= 0) {
 							newStack = null;
+						}
 
 						if((getStackInSlot(runStacks) == null) && (newStack != null)){
 
@@ -295,15 +312,18 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 							break;
 						}
 					}
+				}
 
-				if(reverse.getTagCompound().getInteger(StackUtils.AMT) <= 0)
+				if(reverse.getTagCompound().getInteger(StackUtils.AMT) <= 0) {
 					reverse = new ItemStack(Notes.note);
+				}
 
 				setInventorySlotContents(11, reverse);
 				markDirty();
 			}
-		} else
+		} else {
 			setInventorySlotContents(10, null);
+		}
 
 	}
 
@@ -314,8 +334,9 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		for (int i = 0; i < tagList.tagCount(); i++) {
 			NBTTagCompound tag = tagList.getCompoundTagAt(i);
 			byte slot = tag.getByte("Slot");
-			if ((slot >= 0) && (slot < slots.length))
+			if ((slot >= 0) && (slot < slots.length)) {
 				slots[slot] = ItemStack.loadItemStackFromNBT(tag);
+			}
 		}
 	}
 

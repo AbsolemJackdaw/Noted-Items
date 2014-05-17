@@ -26,16 +26,21 @@ public class ContainerNotingBlock extends Container {
 		this.addSlotToContainer(new SlotNote(te, 11, 32, 48));
 		this.addSlotToContainer(new SlotInk(te, 12, 6, 16));
 
-		for (int l = 0; l < 3; ++l)
-			for (int i1 = 0; i1 < 3; ++i1)
+		for (int l = 0; l < 3; ++l) {
+			for (int i1 = 0; i1 < 3; ++i1) {
 				this.addSlotToContainer(new Slot(te, 1 +  i1 + (l * 3), 78 + (i1 * 18), 16 + (l * 18)));
+			}
+		}
 
-		for (int i = 0; i < 3; i++)
-			for (int k = 0; k < 9; k++)
+		for (int i = 0; i < 3; i++) {
+			for (int k = 0; k < 9; k++) {
 				addSlotToContainer(new Slot(inv, k + (i * 9) + 9, 8 + (k * 18), (68 - 2) + (i * 18) + 18));
+			}
+		}
 
-		for (int j = 0; j < 9; j++)
+		for (int j = 0; j < 9; j++) {
 			addSlotToContainer(new Slot(inv, j, 8 + (j * 18), (126 - 2) + 18));
+		}
 	}
 
 	@Override
@@ -66,46 +71,56 @@ public class ContainerNotingBlock extends Container {
 			itemstack = itemstack1.copy();
 
 			if ((par2 == ink) || (par2 == input) || (par2 == exchange)){
-				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true))
+				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true)) {
 					return null;
+				}
 				slot.onSlotChange(itemstack1, itemstack);
 			}
 
 			if(par2 == result){
-				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true))
+				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax+1, true)) {
 					return null;
+				}
 				slot.decrStackSize(1);
 			}
 
 			if ((par2 >= vanillaMin) && (par2 <= vanillaMax))
 			{
 				if((itemstack.getItem() instanceof ItemDye) && (itemstack.getItemDamage() == 0)){
-					if (!this.mergeItemStack(itemstack1, ink, ink+1, false))
+					if (!this.mergeItemStack(itemstack1, ink, ink+1, false)) {
 						return null;
+					}
 				}
 				else if(itemstack.getItem() instanceof ItemNote){
 					if(!((Slot)inventorySlots.get(input)).getHasStack()){
-						if (!this.mergeItemStack(itemstack1, input, input+1, false))
+						if (!this.mergeItemStack(itemstack1, input, input+1, false)) {
 							return null;
+						}
 					}
 					else
-						if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false))
+						if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false)) {
 							return null;
+						}
 				}
-				else if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false))
+				else if (!this.mergeItemStack(itemstack1, inputsMin, inputsMax+1, false)) {
 					return null;
+				}
 			}
-			else if ((par2 >= inputsMin) && (par2 <= inputsMax))
-				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax +1, false))
+			else if ((par2 >= inputsMin) && (par2 <= inputsMax)) {
+				if (!this.mergeItemStack(itemstack1, vanillaMin, vanillaMax +1, false)) {
 					return null;
+				}
+			}
 
-			if (itemstack1.stackSize == 0)
+			if (itemstack1.stackSize == 0) {
 				slot.putStack((ItemStack)null);
-			else
+			} else {
 				slot.onSlotChanged();
+			}
 
-			if (itemstack1.stackSize == itemstack.stackSize)
+			if (itemstack1.stackSize == itemstack.stackSize) {
 				return null;
+			}
 
 			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
 
@@ -120,14 +135,17 @@ public class ContainerNotingBlock extends Container {
 	{
 		super.onContainerClosed(par1EntityPlayer);
 
-		if (!this.p.worldObj.isRemote)
-			for (int i = 0; i < 12; ++i)
+		if (!this.p.worldObj.isRemote) {
+			for (int i = 0; i < 12; ++i) {
 				if( i != 10){
 					ItemStack itemstack = this.te.getStackInSlotOnClosing(i);
 
-					if (itemstack != null)
+					if (itemstack != null) {
 						par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
+					}
 				}
+			}
+		}
 		te.markDirty();
 	}
 

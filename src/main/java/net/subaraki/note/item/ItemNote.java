@@ -30,10 +30,13 @@ public class ItemNote extends Item {
 			Entity par3Entity, int par4, boolean par5) {
 		super.onUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 
-		if(par1ItemStack.stackSize > 1)
-			if(par1ItemStack.hasTagCompound())
-				if(par1ItemStack.getTagCompound().hasKey(StackUtils.ID))
+		if(par1ItemStack.stackSize > 1) {
+			if(par1ItemStack.hasTagCompound()) {
+				if(par1ItemStack.getTagCompound().hasKey(StackUtils.ID)) {
 					par1ItemStack.getItem().setMaxStackSize(1);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -41,8 +44,9 @@ public class ItemNote extends Item {
 
 		String s = "";
 
-		if(par1ItemStack.hasTagCompound())
+		if(par1ItemStack.hasTagCompound()) {
 			s= par1ItemStack.getTagCompound().getString(StackUtils.ID);
+		}
 
 		return s.length() > 0 ?  StatCollector.translateToLocal("noted.item") + " " + s : super.getItemStackDisplayName(par1ItemStack) + s ;
 	}
@@ -75,17 +79,22 @@ public class ItemNote extends Item {
 		IIcon icon = emptyIcon;
 
 		if(pass > 0){
-			if((b != null) || (i != null))
+			if((b != null) || (i != null)) {
 				if(b instanceof BlockAir){ //if the stack has an item, the blockid will/should return a blockair
-					if(i != null)
+					if(i != null) {
 						icon = i.getIconFromDamageForRenderPass(stack.getTagCompound().getInteger(StackUtils.DMG), pass -1);
-				}else
+					}
+				} else {
 					icon = blockicon;
-		}else
+				}
+			}
+		} else {
 			icon = super.getIcon(stack, 0);
+		}
 
-		if (icon == null)
+		if (icon == null) {
 			icon = emptyIcon;
+		}
 
 		return icon;
 	}
@@ -100,16 +109,17 @@ public class ItemNote extends Item {
 			short id = par1ItemStack.stackTagCompound.getShort(StackUtils.ITM);
 			int dmg = par1ItemStack.stackTagCompound.getShort(StackUtils.DMG);
 			ItemStack s = new ItemStack(Item.getItemById(id),1, dmg);
-			
+
 			par3List.add(StatCollector.translateToLocal("itemnote.noteworth") + par1ItemStack.stackTagCompound.getInteger(StackUtils.AMT) +" "+ s.getDisplayName()
 					);
 		}
 
-		if(par1ItemStack.hasTagCompound())
+		if(par1ItemStack.hasTagCompound()) {
 			par3List.add(StatCollector.translateToLocal("itemnote.damaged") +
 					(par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG) > 0 ? StatCollector.translateToLocal("itemnote.yes")+"," + " " +
 							par1ItemStack.stackTagCompound.getInteger(StackUtils.DMG)
 							: StatCollector.translateToLocal("itemnote.no")));
+		}
 	}
 
 	@Override

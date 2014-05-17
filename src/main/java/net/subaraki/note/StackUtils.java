@@ -45,14 +45,17 @@ public class StackUtils {
 	public NBTTagCompound fuseNbt(NBTTagCompound tag1, NBTTagCompound tag2) {
 		NBTTagCompound tag = new NBTTagCompound();
 
-		if((tag1 == null) && (tag2 == null))
+		if((tag1 == null) && (tag2 == null)) {
 			return tag;
+		}
 
-		if((tag1 == null) || tag1.hasNoTags())
+		if((tag1 == null) || tag1.hasNoTags()) {
 			return tag2;
+		}
 
-		if((tag2 == null) || tag2.hasNoTags())
+		if((tag2 == null) || tag2.hasNoTags()) {
 			return tag1;
+		}
 
 		tag.setInteger(AMT, tag1.getInteger(AMT) + tag2.getInteger(AMT));
 		tag.setString(ID, tag1.getString(ID));
@@ -67,15 +70,18 @@ public class StackUtils {
 	 * */
 	public boolean NBTAreEqual(NBTTagCompound tag1, NBTTagCompound tag2){
 
-		if(tag1 == null)
+		if(tag1 == null) {
 			return false;
-		if(tag2 == null)
+		}
+		if(tag2 == null) {
 			return false;
+		}
 
 		if((tag1.getInteger(DMG) == tag2.getInteger(DMG)) &&
 				(tag1.getShort(ITM) == tag2.getShort(ITM)) &&
-				tag1.getString(ID).equals(tag2.getString(ID)))
+				tag1.getString(ID).equals(tag2.getString(ID))) {
 			return true;
+		}
 
 		return false;
 	}
@@ -85,8 +91,9 @@ public class StackUtils {
 
 		if(tag.getString(ID).equals(stack.getDisplayName()) &&
 				(tag.getInteger(DMG) == stack.getItemDamage()) &&
-				(tag.getShort(ITM) == Item.getIdFromItem(stack.getItem())))
+				(tag.getShort(ITM) == Item.getIdFromItem(stack.getItem()))) {
 			return true;
+		}
 
 		return false;
 	}
