@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.subaraki.note.block.inventory.TileEntityNoteTable;
 import net.subaraki.note.block.model.ModelNotingTable;
 
 public class TileEntitySpecialRenderingNoteTable extends
@@ -22,6 +23,31 @@ TileEntitySpecialRenderer {
 	@Override
 	public void renderTileEntityAt(TileEntity var1, double x, double y,
 			double z, float var8) {
+
+
+		if(var1 != null)
+			if(var1 instanceof TileEntityNoteTable){
+				TileEntityNoteTable te = (TileEntityNoteTable)var1;
+
+				table.Shape2.showModel = true;
+				table.Shape3.showModel = true;
+				table.Shape4.showModel = true;
+				table.Shape5.showModel = true;
+
+				if(te.xPlusOne){
+					table.Shape3.showModel = false;
+					table.Shape4.showModel = false;
+				} if(te.xMinusOne){
+					table.Shape2.showModel = false;
+					table.Shape5.showModel = false;
+				}if(te.zPlusOne){
+					table.Shape3.showModel = false;
+					table.Shape2.showModel = false;
+				}if(te.zMinusOne){
+					table.Shape5.showModel = false;
+					table.Shape4.showModel = false;
+				}
+			}
 
 		glPushMatrix();
 

@@ -1,5 +1,7 @@
 item.notedItem.name=Item Note
+item.notedMagicItem.name=Magic Item Note
 tile.notedTable.name=Noting Table
+
 
 noted.item=Noted
 itemnote.damaged=Item Damaged ?

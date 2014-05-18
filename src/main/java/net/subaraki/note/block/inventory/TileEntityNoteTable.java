@@ -1,5 +1,6 @@
 package net.subaraki.note.block.inventory;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -133,8 +134,36 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 		return true;
 	}
 
+	public boolean xPlusOne;
+	public boolean xMinusOne;
+	public boolean zPlusOne;
+	public boolean zMinusOne;
+
+	public boolean isConnected;
+	
 	@Override
 	public void updateEntity() {
+
+		if(getWorldObj().getBlock(xCoord+1, yCoord, zCoord).equals(Notes.table))
+			xPlusOne = true;
+		else
+			xPlusOne = false;
+		
+		if(getWorldObj().getBlock(xCoord-1, yCoord, zCoord).equals(Notes.table))
+			xMinusOne = true;
+		else
+			xMinusOne = false;
+		
+		if(getWorldObj().getBlock(xCoord, yCoord, zCoord+1).equals(Notes.table))
+			zPlusOne = true;
+		else
+			zPlusOne = false;
+		
+		if(getWorldObj().getBlock(xCoord, yCoord, zCoord-1).equals(Notes.table))
+			zMinusOne = true;
+		else
+			zMinusOne = false;
+
 		craft();
 	}
 
@@ -223,7 +252,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 										if(note.hasTagCompound()){
 
 											if(new StackUtils().areNBTEqual(note.getTagCompound(), getStackInSlot(slot).getTagCompound())){
-												
+
 												totalStackAmount += getStackInSlot(slot).getTagCompound().getInteger(StackUtils.AMT);
 
 												NBTTagCompound tag = (NBTTagCompound) note.getTagCompound().copy();
@@ -264,13 +293,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						setInventorySlotContents(10, null);
 						return;
 					}
-					
+
 					//this should not have more checks, 
 					//if the note has a stackcompound but no other of the previous checks was passed
 					//we would never be here
 					if(note.hasTagCompound())
 						stubNbt.setInteger(StackUtils.AMT, stubNbt.getInteger(StackUtils.AMT) + note.getTagCompound().getInteger(StackUtils.AMT));
-					
+
 					ItemStack noted = new ItemStack(Notes.note, 1,0);
 					noted.stackTagCompound = stubNbt;
 
