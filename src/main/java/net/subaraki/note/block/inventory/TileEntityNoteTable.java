@@ -317,8 +317,8 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					//this should not have more checks, 
 					//if the note has a stackcompound but no other of the previous checks was passed
 					//we would never be here
-					if(note.hasTagCompound())
-						stubNbt.setInteger(StackUtils.AMT, stubNbt.getInteger(StackUtils.AMT) + note.getTagCompound().getInteger(StackUtils.AMT));
+//					if(note.hasTagCompound())
+//						stubNbt.setInteger(StackUtils.AMT, stubNbt.getInteger(StackUtils.AMT) + note.getTagCompound().getInteger(StackUtils.AMT));
 
 					ItemStack noted = new ItemStack(Notes.note, 1,0);
 					noted.stackTagCompound = stubNbt;
