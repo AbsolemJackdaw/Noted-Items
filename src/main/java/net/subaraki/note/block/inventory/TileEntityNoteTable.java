@@ -12,6 +12,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.subaraki.note.Notes;
 import net.subaraki.note.StackUtils;
+import net.subaraki.note.config.Config;
 import net.subaraki.note.item.ItemNote;
 
 public class TileEntityNoteTable extends TileEntity implements IInventory{
@@ -162,7 +163,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 					int totalStackAmount = 0;
 
 					//used for consuming ink
-					int numberOfStacks = 0;
+					int totalInkToConsume = 0;
 
 					NBTTagCompound stubNbt = new NBTTagCompound();
 
@@ -254,12 +255,12 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 								return;
 							}
 
-							numberOfStacks +=1;
+							totalInkToConsume += Config.instance.inkPerStack;
 						}
 					}//end of for loop
 
 					//if the player did not provide enough ink, you can't write notes
-					if(numberOfStacks > ink.stackSize){
+					if(totalInkToConsume > ink.stackSize){
 						setInventorySlotContents(10, null);
 						return;
 					}

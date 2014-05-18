@@ -35,6 +35,14 @@ public class ItemMagicNote extends ItemNote {
 
 	@Override
 	@SideOnly(Side.CLIENT)
+	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
+		if(par2 == 0)
+			return 0x1dbddb;
+		
+		return super.getColorFromItemStack(par1ItemStack, par2);
+	}
+	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean requiresMultipleRenderPasses() {
 		return super.requiresMultipleRenderPasses();
 	}
@@ -56,6 +64,8 @@ public class ItemMagicNote extends ItemNote {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+		
+		par3List.add("WIP ITEM");
 	}
 
 	@Override

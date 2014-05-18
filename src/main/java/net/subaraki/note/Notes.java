@@ -7,8 +7,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.Configuration;
 import net.subaraki.note.block.BlockNotingTable;
 import net.subaraki.note.block.inventory.TileEntityNoteTable;
+import net.subaraki.note.config.Config;
+import net.subaraki.note.item.ItemMagicNote;
 import net.subaraki.note.item.ItemNote;
 import net.subaraki.note.proxy.ServerProxy;
 import cpw.mods.fml.common.Mod;
@@ -24,6 +27,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class Notes {
 
 	public static Item note;
+	public static Item magicNote;
 
 	public static Block table;
 
@@ -34,6 +38,9 @@ public class Notes {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e){
+		
+		Config.instance.loadConfig(e.getSuggestedConfigurationFile());
+
 		instance = this;
 		addItems();
 		addBlocks();
@@ -53,7 +60,8 @@ public class Notes {
 	}
 
 	private void addItems(){
-		note = new ItemNote().setUnlocalizedName("notedItem").setTextureName("map_empty").setCreativeTab(CreativeTabs.tabAllSearch);
+		note = new ItemNote().setUnlocalizedName("notedItem").setTextureName("map_empty").setCreativeTab(CreativeTabs.tabMaterials);
+		magicNote = new ItemMagicNote().setUnlocalizedName("notedMagicItem").setTextureName("map_empty").setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	private void addBlocks(){
@@ -62,6 +70,7 @@ public class Notes {
 
 	private void registerItems(){
 		GameRegistry.registerItem(note, "notedItem");
+		GameRegistry.registerItem(magicNote, "notedItemMagic");
 	}
 
 	private void registerBlocks(){
