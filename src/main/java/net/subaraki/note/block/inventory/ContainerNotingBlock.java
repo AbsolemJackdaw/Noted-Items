@@ -136,13 +136,11 @@ public class ContainerNotingBlock extends Container {
 		super.onContainerClosed(par1EntityPlayer);
 
 		if (!this.p.worldObj.isRemote) {
-			for (int i = 0; i < 12; ++i) {
-				if( i != 10){
-					ItemStack itemstack = this.te.getStackInSlotOnClosing(i);
+			for (int i = 1; i < 10; ++i) {
+				ItemStack itemstack = this.te.getStackInSlotOnClosing(i);
 
-					if (itemstack != null) {
-						par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
-					}
+				if (itemstack != null) {
+					par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
 				}
 			}
 		}

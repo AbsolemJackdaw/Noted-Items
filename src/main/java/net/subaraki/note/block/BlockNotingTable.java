@@ -15,7 +15,7 @@ public class BlockNotingTable extends Block{
 
 	public BlockNotingTable(Material mat) {
 		super(mat);
-		setCreativeTab(CreativeTabs.tabAllSearch);
+		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class BlockNotingTable extends Block{
 			int z, Block block, int meta) {
 
 		TileEntityNoteTable te = (TileEntityNoteTable) world.getTileEntity(x, y, z);
-
+		
 		for(int i = 0; i < te.getSizeInventory(); i ++) {
 			if(i != 10) {
 				if(te.getStackInSlot(i)!=null){
