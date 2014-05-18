@@ -65,7 +65,8 @@ public class StackUtils {
 
 		return tag;
 	}
-
+	
+	
 	/**checks if the returning keys from both stacks are the same
 	 * checks for damage, contained item, and display name
 	 * */

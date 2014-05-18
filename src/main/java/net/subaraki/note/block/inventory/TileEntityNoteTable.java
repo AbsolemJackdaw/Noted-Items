@@ -172,11 +172,11 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 							//if all other stacks equal the sample stack, continue
 							if(new StackUtils().doesStackEqualSample(getStackInSlot(slot), sample)){
-								totalStackAmount += getStackInSlot(slot).stackSize;
+
 
 								//feathers, normal swords, tools, cobblestone, ...
 								if(!getStackInSlot(slot).hasTagCompound()){
-
+									totalStackAmount += getStackInSlot(slot).stackSize;
 									//if note already contains items
 									if(note.hasTagCompound()){
 
@@ -184,6 +184,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 										if(new StackUtils().canItemBeNoted(sample, note.getTagCompound())){
 											NBTTagCompound tag = new NBTTagCompound();
+
 											tag = new StackUtils().createNotedNbt(totalStackAmount,
 													sample.getDisplayName(), sample.getItemDamage(), 
 													(short)Item.getIdFromItem(sample.getItem()));
@@ -205,21 +206,30 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 											NBTTagCompound tag =  new StackUtils().createNotedNbt(totalStackAmount, 
 													sample.getDisplayName(), sample.getItemDamage(), 
 													(short)Item.getIdFromItem(sample.getItem()));
-											stubNbt = new StackUtils().fuseNbt(stubNbt, tag);
+
+											NBTTagCompound tag2 =  new StackUtils().createNotedNbt(0, 
+													sample.getDisplayName(), sample.getItemDamage(), 
+													(short)Item.getIdFromItem(sample.getItem()));
+
+											stubNbt = new StackUtils().fuseNbt(tag2, tag);
 										}
 									}
 								}
 								//if the grid stack has a tag compound
 								else{
 									if((getStackInSlot(slot).getItem() instanceof ItemNote)){
-
 										//if note already contains items
 										if(note.hasTagCompound()){
 
-											stubNbt = note.getTagCompound();
+											if(new StackUtils().areNBTEqual(note.getTagCompound(), getStackInSlot(slot).getTagCompound())){
+												
+												totalStackAmount += getStackInSlot(slot).getTagCompound().getInteger(StackUtils.AMT);
 
-											if(new StackUtils().areNBTEqual(stubNbt, getStackInSlot(slot).getTagCompound())){
-												stubNbt = new StackUtils().fuseNbt(stubNbt, getStackInSlot(slot).getTagCompound());
+												NBTTagCompound tag = (NBTTagCompound) note.getTagCompound().copy();
+												tag.setInteger(StackUtils.AMT, totalStackAmount);
+
+												stubNbt = tag;
+
 											}else{
 												setInventorySlotContents(10, null);
 												return;
@@ -253,7 +263,13 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						setInventorySlotContents(10, null);
 						return;
 					}
-
+					
+					//this should not have more checks, 
+					//if the note has a stackcompound but no other of the previous checks was passed
+					//we would never be here
+					if(note.hasTagCompound())
+						stubNbt.setInteger(StackUtils.AMT, stubNbt.getInteger(StackUtils.AMT) + note.getTagCompound().getInteger(StackUtils.AMT));
+					
 					ItemStack noted = new ItemStack(Notes.note, 1,0);
 					noted.stackTagCompound = stubNbt;
 

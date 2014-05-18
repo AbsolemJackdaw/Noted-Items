@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -43,21 +44,44 @@ public class ItemNote extends Item {
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
 
-		int color = 0xffffff;
+		int color = super.getColorFromItemStack(par1ItemStack, 0);
 
-		if(par2 > 0){
+		if(par2 > 0)
+			if(par1ItemStack.hasTagCompound()){
+
+				short i = par1ItemStack.getTagCompound().getShort(StackUtils.ITM);
+				Item it = Item.getItemById(i);
+				int dmg = par1ItemStack.getTagCompound().getInteger(StackUtils.DMG);
+
+				ItemStack stack = new ItemStack(it, 1, dmg);
+
+				color = stack.getItem().getColorFromItemStack(stack, par2-1);
+			}
+
+		return color;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+
+		boolean b = super.hasEffect(par1ItemStack, 0);
+
+		if(pass > 0){
 			if(par1ItemStack.hasTagCompound()){
 				short i = par1ItemStack.getTagCompound().getShort(StackUtils.ITM);
 				Item it = Item.getItemById(i);
 				int dmg = par1ItemStack.getTagCompound().getInteger(StackUtils.DMG);
-				ItemStack stack = new ItemStack(it,1, dmg);
 
-				color = stack.getItem().getColorFromItemStack(par1ItemStack, par2-1);
+				ItemStack stack = new ItemStack(it, 1, dmg);
+
+				b = stack.getItem().hasEffect(stack, pass-1);
 			}
 		}
 
-		return par2 == 0 ? super.getColorFromItemStack(par1ItemStack, par2) : color;
+		return b;
 	}
+
 
 	@Override
 	public String getItemStackDisplayName(ItemStack par1ItemStack) {
