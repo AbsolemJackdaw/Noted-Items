@@ -13,6 +13,17 @@ public class ContainerNotingBlock extends Container {
 	EntityPlayer p;
 	TileEntityNoteTable te;
 
+	int input = 0;
+	int result = 1;
+	int exchange = 2;
+	int ink = 3;
+
+	int inputsMax = 12;
+	int inputsMin = 4;
+
+	int vanillaMax = 48;
+	int vanillaMin = 13;
+
 	public ContainerNotingBlock(TileEntityNoteTable te, EntityPlayer player) {
 
 		p = player;
@@ -20,9 +31,20 @@ public class ContainerNotingBlock extends Container {
 
 		InventoryPlayer inv = player.inventory;
 
+		if(te.isConnected){
+			inputsMax = 21;
+			
+			vanillaMax = 57;
+			vanillaMin = 22;
+		}
+		
 		this.addSlotToContainer(new SlotNote(te, 0, 32, 16));
 
-		this.addSlotToContainer(new SlotNoteResult(te, 10, 144, 32));
+		if(te.isConnected)
+			this.addSlotToContainer(new SlotNoteResult(te, 10, 201, 32));
+		else
+			this.addSlotToContainer(new SlotNoteResult(te, 10, 144, 32));
+
 		this.addSlotToContainer(new SlotNote(te, 11, 32, 48));
 		this.addSlotToContainer(new SlotInk(te, 12, 6, 16));
 
@@ -32,14 +54,26 @@ public class ContainerNotingBlock extends Container {
 			}
 		}
 
+		if(te.isConnected){
+			for (int l = 0; l < 3; ++l) {
+				for (int i1 = 0; i1 < 3; ++i1) {
+					this.addSlotToContainer(new Slot(te, 13 +  i1 + (l * 3), 78 + (i1 * 18) + 56, 16 + (l * 18)));
+				}
+			}
+		}
+
+
+		int offs = te.isConnected ? 24 : 0;
+
+
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {
-				addSlotToContainer(new Slot(inv, k + (i * 9) + 9, 8 + (k * 18), (68 - 2) + (i * 18) + 18));
+				addSlotToContainer(new Slot(inv, k + (i * 9) + 9, 8 + (k * 18) + offs, (68 - 2) + (i * 18) + 18));
 			}
 		}
 
 		for (int j = 0; j < 9; j++) {
-			addSlotToContainer(new Slot(inv, j, 8 + (j * 18), (126 - 2) + 18));
+			addSlotToContainer(new Slot(inv, j, 8 + (j * 18) + offs, (126 - 2) + 18));
 		}
 	}
 
@@ -53,17 +87,6 @@ public class ContainerNotingBlock extends Container {
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot)this.inventorySlots.get(par2);
-
-		int input = 0;
-		int result = 1;
-		int exchange = 2;
-		int ink = 3;
-
-		int inputsMax = 12;
-		int inputsMin = 4;
-
-		int vanillaMax = 48;
-		int vanillaMin = 13;
 
 		if ((slot != null) && slot.getHasStack())
 		{

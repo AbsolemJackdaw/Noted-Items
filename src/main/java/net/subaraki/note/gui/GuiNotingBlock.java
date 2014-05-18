@@ -18,6 +18,7 @@ public class GuiNotingBlock extends GuiContainer {
 	TileEntityNoteTable te;
 
 	private ResourceLocation BG = new ResourceLocation("noteditems","textures/gui.png");
+	private ResourceLocation BG2 = new ResourceLocation("noteditems","textures/guiDouble.png");
 
 	public GuiNotingBlock(TileEntityNoteTable te, EntityPlayer player){
 		super(new ContainerNotingBlock(te, player));
@@ -33,15 +34,30 @@ public class GuiNotingBlock extends GuiContainer {
 		int j = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 
-		mc.renderEngine.bindTexture(BG);
-		drawTexturedModalRect(j, k, 0, 0, 176, 166);
+		if(te.isConnected){
+			mc.renderEngine.bindTexture(BG2);
+			
+			drawTexturedModalRect(j, k, 0, 0, 224, 166);
 
-		if(te.getStackInSlot(0) != null && te.getStackInSlot(12) != null && te .getStackInSlot(11) == null){
-			drawTexturedModalRect(j + 56, k + 22, 32, 176, 84, 40);
+			if(te.getStackInSlot(0) != null && te.getStackInSlot(12) != null && te .getStackInSlot(11) == null){
+				drawTexturedModalRect(j + 56, k + 22, 32, 176, 84, 40);
 
-		}else if (te.getStackInSlot(11) != null && te .getStackInSlot(0) == null){
-			drawTexturedModalRect(j + 56 , k + 50, 16, 176, 16, 16);
+			}else if (te.getStackInSlot(11) != null && te .getStackInSlot(0) == null){
+				drawTexturedModalRect(j + 56 , k + 50, 16, 176, 16, 16);
+			}
 		}
+		else{
+			mc.renderEngine.bindTexture(BG);
+			drawTexturedModalRect(j, k, 0, 0, 176, 166);
+
+			if(te.getStackInSlot(0) != null && te.getStackInSlot(12) != null && te .getStackInSlot(11) == null){
+				drawTexturedModalRect(j + 56, k + 22, 32, 176, 84, 40);
+
+			}else if (te.getStackInSlot(11) != null && te .getStackInSlot(0) == null){
+				drawTexturedModalRect(j + 56 , k + 50, 16, 176, 16, 16);
+			}
+		}
+		
 
 		ItemStack stub = new ItemStack(Items.dye, 1 , 0);
 

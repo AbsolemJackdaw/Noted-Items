@@ -34,8 +34,8 @@ public class BlockNotingTable extends Block{
 			int z, Block block, int meta) {
 
 		TileEntityNoteTable te = (TileEntityNoteTable) world.getTileEntity(x, y, z);
-		
-		for(int i = 0; i < te.getSizeInventory(); i ++) {
+		int stacks = te.isConnected ? 22 : 13;
+		for(int i = 0; i < stacks; i ++) {
 			if(i != 10) {
 				if(te.getStackInSlot(i)!=null){
 					EntityItem ei = new EntityItem(world, x, y, z, te.getStackInSlot(i));
