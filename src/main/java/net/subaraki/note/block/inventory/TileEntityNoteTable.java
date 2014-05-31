@@ -1,6 +1,5 @@
 package net.subaraki.note.block.inventory;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -11,7 +10,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.subaraki.note.Notes;
 import net.subaraki.note.StackUtils;
 import net.subaraki.note.config.Config;
@@ -142,11 +140,6 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 
 	public boolean isConnected;
 
-	private void setTrueSetFalse(boolean a, boolean b, boolean c){
-		a = c;
-		b = c;
-	}
-
 	@Override
 	public void updateEntity() {
 
@@ -236,7 +229,7 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 											NBTTagCompound tag = new NBTTagCompound();
 
 											tag = new StackUtils().createNotedNbt(totalStackAmount,
-													sample.getDisplayName(), sample.getItemDamage(), 
+													sample.getDisplayName(), sample.getItemDamage(),
 													(short)Item.getIdFromItem(sample.getItem()));
 
 											stubNbt = new StackUtils().fuseNbt(stubNbt, tag);
@@ -248,17 +241,17 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 									}else{
 										//if the note is empty
 
-										if(stubNbt.hasNoTags())
-											stubNbt =  new StackUtils().createNotedNbt(totalStackAmount, 
-													sample.getDisplayName(), sample.getItemDamage(), 
+										if(stubNbt.hasNoTags()) {
+											stubNbt =  new StackUtils().createNotedNbt(totalStackAmount,
+													sample.getDisplayName(), sample.getItemDamage(),
 													(short)Item.getIdFromItem(sample.getItem()));
-										else{
-											NBTTagCompound tag =  new StackUtils().createNotedNbt(totalStackAmount, 
-													sample.getDisplayName(), sample.getItemDamage(), 
+										} else{
+											NBTTagCompound tag =  new StackUtils().createNotedNbt(totalStackAmount,
+													sample.getDisplayName(), sample.getItemDamage(),
 													(short)Item.getIdFromItem(sample.getItem()));
 
-											NBTTagCompound tag2 =  new StackUtils().createNotedNbt(0, 
-													sample.getDisplayName(), sample.getItemDamage(), 
+											NBTTagCompound tag2 =  new StackUtils().createNotedNbt(0,
+													sample.getDisplayName(), sample.getItemDamage(),
 													(short)Item.getIdFromItem(sample.getItem()));
 
 											stubNbt = new StackUtils().fuseNbt(tag2, tag);
@@ -314,11 +307,12 @@ public class TileEntityNoteTable extends TileEntity implements IInventory{
 						return;
 					}
 
-					//this should not have more checks, 
+					//this should not have more checks,
 					//if the note has a stackcompound but no other of the previous checks was passed
 					//we would never be here
-					if(note.hasTagCompound() && sample.hasTagCompound())
+					if(note.hasTagCompound() && sample.hasTagCompound()) {
 						stubNbt.setInteger(StackUtils.AMT, stubNbt.getInteger(StackUtils.AMT) + note.getTagCompound().getInteger(StackUtils.AMT));
+					}
 
 					ItemStack noted = new ItemStack(Notes.note, 1,0);
 					noted.stackTagCompound = stubNbt;

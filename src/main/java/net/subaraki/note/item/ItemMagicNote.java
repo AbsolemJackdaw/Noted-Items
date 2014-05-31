@@ -2,32 +2,27 @@ package net.subaraki.note.item;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.subaraki.note.StackUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class ItemMagicNote extends ItemNote {
 
 	public ItemMagicNote() {
 	}
-	
+
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
 		super.onUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack par1ItemStack) {
 		return super.getItemStackDisplayName(par1ItemStack);
@@ -36,9 +31,10 @@ public class ItemMagicNote extends ItemNote {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-		if(par2 == 0)
+		if(par2 == 0) {
 			return 0x1dbddb;
-		
+		}
+
 		return super.getColorFromItemStack(par1ItemStack, par2);
 	}
 	@Override
@@ -64,7 +60,7 @@ public class ItemMagicNote extends ItemNote {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		
+
 		par3List.add("WIP ITEM");
 	}
 

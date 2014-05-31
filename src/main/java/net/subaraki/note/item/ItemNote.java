@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -46,7 +45,7 @@ public class ItemNote extends Item {
 
 		int color = super.getColorFromItemStack(par1ItemStack, 0);
 
-		if(par2 > 0)
+		if(par2 > 0) {
 			if(par1ItemStack.hasTagCompound()){
 
 				short i = par1ItemStack.getTagCompound().getShort(StackUtils.ITM);
@@ -57,6 +56,7 @@ public class ItemNote extends Item {
 
 				color = stack.getItem().getColorFromItemStack(stack, par2-1);
 			}
+		}
 
 		return color;
 	}

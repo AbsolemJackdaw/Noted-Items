@@ -33,17 +33,18 @@ public class ContainerNotingBlock extends Container {
 
 		if(te.isConnected){
 			inputsMax = 21;
-			
+
 			vanillaMax = 57;
 			vanillaMin = 22;
 		}
-		
+
 		this.addSlotToContainer(new SlotNote(te, 0, 32, 16));
 
-		if(te.isConnected)
+		if(te.isConnected) {
 			this.addSlotToContainer(new SlotNoteResult(te, 10, 201, 32));
-		else
+		} else {
 			this.addSlotToContainer(new SlotNoteResult(te, 10, 144, 32));
+		}
 
 		this.addSlotToContainer(new SlotNote(te, 11, 32, 48));
 		this.addSlotToContainer(new SlotInk(te, 12, 6, 16));

@@ -25,7 +25,7 @@ TileEntitySpecialRenderer {
 			double z, float var8) {
 
 
-		if(var1 != null)
+		if(var1 != null) {
 			if(var1 instanceof TileEntityNoteTable){
 				TileEntityNoteTable te = (TileEntityNoteTable)var1;
 
@@ -48,6 +48,7 @@ TileEntitySpecialRenderer {
 					table.Shape4.showModel = false;
 				}
 			}
+		}
 
 		glPushMatrix();
 

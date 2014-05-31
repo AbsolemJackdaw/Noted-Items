@@ -3,11 +3,9 @@ package net.subaraki.note.item.renderer;
 import static org.lwjgl.opengl.GL11.glScalef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.subaraki.note.block.inventory.TileEntityNoteTable;
 import net.subaraki.note.block.model.ModelNotingTable;
 
 import org.lwjgl.opengl.GL11;
@@ -16,7 +14,7 @@ public class RenderNotingBlock implements IItemRenderer {
 
 	private ModelNotingTable table = new ModelNotingTable();
 	private static final ResourceLocation texture = new ResourceLocation("noteditems","model/table.png");
-	
+
 	public RenderNotingBlock() {
 	}
 
@@ -58,7 +56,7 @@ public class RenderNotingBlock implements IItemRenderer {
 
 		table.render();
 
-		
+
 		//TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEntityNoteTable(), 0D, 0D, 0D, 0F);
 
 		GL11.glPopMatrix();
